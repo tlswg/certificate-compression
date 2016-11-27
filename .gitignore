@@ -1,0 +1,12 @@
+*.redxml
+*.txt
+*.html
+*.pdf
+*~
+*.swp
+/*-[0-9][0-9].xml
+.refcache
+.targets
+venv/
+issues.json
+draft-ghedini-tls-certificate-compression.md
