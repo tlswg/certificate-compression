@@ -13,10 +13,12 @@ author:
     email: alessandro@cloudflare.com
 
 normative:
+  RFC1950:
   RFC2119:
   RFC5226:
   RFC5246:
   RFC4366:
+  RFC7932:
 
 informative:
   RFC7924:
@@ -44,51 +46,67 @@ doesn't already have knowledge of the server's certificate chain.
 This document describes a mechanism that would allow certificates to be
 compressed during full handshakes.
 
-## Notational Conventions
+# Notational Conventions
 
 The words "MUST", "MUST NOT", "SHOULD", and "MAY" are used in this document.
 It's not shouting; when they are capitalized, they have the special meaning
 defined in [RFC2119].
 
-# Certificate Compression Extension
-
-*TODO: Should this use RFC7250 instead?*
+# Negotiating Certificate Compression
 
 This document defines a new extension type (compress_certificates(TBD)), which
-is used in ClientHello and ServerHello messages. The extension type is
-specified as follows.
+is used by the client and the server to negotiate the use of compression as well
+as the choice of the compression algorithm.
+
+By sending the compress_certificates message, the client indicates to the server
+the certificate compression algorithms it supports.  The "extension_data" field
+of this extension in the ClientHello SHALL contain a
+CertificateCompressionAlgorithms value:
 
 ~~~
     enum {
-         compress_certificates(TBD), (65535)
-    } ExtensionType;
+        zlib(0),
+        brotli(1),
+        (255)
+    } CertificateCompressionAlgorithm;
+
+    struct {
+        CertificateCompressionAlgorithm algoritms<1..2^8>;
+    } CertificateCompressionAlgorithms;
 ~~~
 
-This allows TLS clients and servers to negotiate that the server sends its
-certificate chain in compressed form.
-
-In order to negotiate the use of compressed certificates, clients MAY include
-an extension of type "compress_certificates" in the extended client hello. The
-"extension_data" field of this extension SHALL be empty.
-
-Servers that receive an extended hello containing a "compress_certificates"
-extension MAY agree to use compressed certificates by including an extension
-of type "compress_certificates", with empty "extension_data", in the extended
-server hello.
+If the server supports any of the algorithms offered in the ClientHello, it MAY
+respond with an extension indicating which compression algorithm it chose.  In
+that case, the extension_data SHALL be a CertificateCompressionAlgorithm value
+corresponding to the chosen algorithm.  If the server has chosen to not use any
+compression, it MUST NOT send the compress_certificates extension.
 
 # Server Certificate Message
 
-When a ClientHello message contains the "compress_certificates" and the server
-agrees to use compressed certificates by sending the same extension back, then
-the server MUST send the certificate message shown in Figure 2.
+If the server picks a compression algorithm and sends it in the ServerHello, the
+format of the Certificate message is altered as follows:
 
 ~~~
     struct {
-         TBD
+         opaque compressed_certificate_message<1..2^16-1>;
     } Certificate;
 ~~~
 
-*TODO: Define CertificateEntry for TLS 1.3?*
+Here, compressed_certificate_message contains the compressed body of the
+Certificate message, in the same format as the server would normally express it.
+The compression algorithm defines how the bytes in the
+compressed_certificate_message are converted into the Certificate message.
+
+If the specified compression algorithm is zlib, then the Certificate message
+MUST be compressed with the ZLIB compression algorithm, as defined in [RFC1950].
+If the specified compression algorithm is brotli, the Certificate message MUST
+be compressed with the Brotli compression algorithm as defined in [RFC7932].
+
+If the client cannot decompress the received Certificate message from the
+server, it MUST tear down the connection with "bad_certificate" alert.
+
+The extension only affects the Certificate message from the server.  It does not
+change the format of the Certificate message sent by the client.
 
 # Security Considerations
 
