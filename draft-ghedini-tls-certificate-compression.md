@@ -110,7 +110,23 @@ change the format of the Certificate message sent by the client.
 
 # Security Considerations
 
-TBD
+After decompression, the Certificate message MUST be processed as if it were
+encoded without being compressed.  This way, the parsing and the verification
+have same security properties as they would have in TLS normally.
+
+Since certificate chains are typically presented on a per-server name basis, the
+attacker does not have control over any individual fragments in the Certificate
+message, meaning that they cannot leak information about the certificate by
+modifying the plaintext.
+
+The implementations SHOULD bound the memory usage when decompressing the
+Certificate message.
+
+The implementations MUST limit the size of the resulting decompressed chain to
+65536 bytes, and they MUST abort the connection if the size exceeds that limit.
+If the implementations impose an additional smaller limit on the chain size in
+addition to the 65536 byte limit imposed by TLS framing, they MUST apply the
+same limit to the uncompressed chain.
 
 # IANA Considerations
 
