@@ -130,9 +130,27 @@ same limit to the uncompressed chain.
 
 # IANA Considerations
 
-## New Entry to the TLS ExtensionType Registry
+## Update of the TLS ExtensionType Registry
 
 Create an entry, compress_certificates(TBD), in the existing registry for
 ExtensionType (defined in [RFC5246]).
+
+## Registry for Compression Algorithms
+
+This document establishes a registry of compression algorithms supported for
+compressing the Certificate message, titled "Certificate Compression Algorithm
+IDs", under the existing "Transport Layer Security (TLS) Extensions" heading.
+
+The entries in the registry are:
+
+| Algorithm Number | Description              |
+|:-----------------|:-------------------------|
+| 0                | zlib                     |
+| 1                | brotli                   |
+| 224 to 255       | Reserved for Private Use |
+
+The values in this registry shall be allocated under "IETF Review" policy for
+values stricly smaller than 64, and under "Specification Required" policy
+otherwise (see [RFC5226] for the definition of relevant policies).
 
 --- back
