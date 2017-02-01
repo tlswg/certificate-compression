@@ -1,6 +1,7 @@
 ---
 title: Transport Layer Security (TLS) Certificate Compression
 docname: draft-ghedini-tls-certificate-compression-latest
+abbrev: TLS Certificate Compression
 
 stand_alone: yes
 pi: [toc, sortrefs, symrefs, docmapping]
@@ -11,6 +12,11 @@ author:
     name: Alessandro Ghedini
     org: Cloudflare, Inc.
     email: alessandro@cloudflare.com
+ -
+    ins: V. Vasiliev
+    name: Victor Vasiliev
+    org: Google
+    email: vasilvv@google.com
 
 normative:
   RFC1950:
@@ -48,9 +54,9 @@ compressed during full handshakes.
 
 # Notational Conventions
 
-The words "MUST", "MUST NOT", "SHOULD", and "MAY" are used in this document.
-It's not shouting; when they are capitalized, they have the special meaning
-defined in [RFC2119].
+The words "MUST", "MUST NOT", "SHALL", "SHOULD", and "MAY" are used in this
+document.  It's not shouting; when they are capitalized, they have the special
+meaning defined in [RFC2119].
 
 # Negotiating Certificate Compression
 
@@ -71,7 +77,7 @@ CertificateCompressionAlgorithms value:
     } CertificateCompressionAlgorithm;
 
     struct {
-        CertificateCompressionAlgorithm algoritms<1..2^8>;
+        CertificateCompressionAlgorithm algorithms<1..2^8>;
     } CertificateCompressionAlgorithms;
 ~~~
 
@@ -126,7 +132,8 @@ The implementations MUST limit the size of the resulting decompressed chain to
 65536 bytes, and they MUST abort the connection if the size exceeds that limit.
 If the implementations impose an additional smaller limit on the chain size in
 addition to the 65536 byte limit imposed by TLS framing, they MUST apply the
-same limit to the uncompressed chain.
+same limit to the uncompressed chain, as well as reject any compressed chain
+exceeding the limit before decompressing it.
 
 # IANA Considerations
 
@@ -150,7 +157,7 @@ The entries in the registry are:
 | 224 to 255       | Reserved for Private Use |
 
 The values in this registry shall be allocated under "IETF Review" policy for
-values stricly smaller than 64, and under "Specification Required" policy
+values strictly smaller than 64, and under "Specification Required" policy
 otherwise (see [RFC5226] for the definition of relevant policies).
 
 --- back
