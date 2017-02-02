@@ -109,7 +109,7 @@ If the specified compression algorithm is brotli, the Certificate message MUST
 be compressed with the Brotli compression algorithm as defined in [RFC7932].
 
 If the client cannot decompress the received Certificate message from the
-server, it MUST tear down the connection with "bad_certificate" alert.
+server, it MUST tear down the connection with the "bad_certificate" alert.
 
 The extension only affects the Certificate message from the server.  It does not
 change the format of the Certificate message sent by the client.
@@ -118,7 +118,7 @@ change the format of the Certificate message sent by the client.
 
 After decompression, the Certificate message MUST be processed as if it were
 encoded without being compressed.  This way, the parsing and the verification
-have same security properties as they would have in TLS normally.
+have the same security properties as they would have in TLS normally.
 
 Since certificate chains are typically presented on a per-server name basis, the
 attacker does not have control over any individual fragments in the Certificate
