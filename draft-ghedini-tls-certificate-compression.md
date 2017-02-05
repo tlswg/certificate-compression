@@ -94,6 +94,7 @@ format of the Certificate message is altered as follows:
 
 ~~~
     struct {
+         uint16 uncompressed_length;
          opaque compressed_certificate_message<1..2^16-1>;
     } Certificate;
 ~~~
@@ -102,6 +103,10 @@ Here, compressed_certificate_message contains the compressed body of the
 Certificate message, in the same format as the server would normally express it.
 The compression algorithm defines how the bytes in the
 compressed_certificate_message are converted into the Certificate message.
+uncomressed_length indicates the length of the Certificate message once it is
+uncompressed.  If after decompression the specified length does not match the
+actual length, the client MUST abort the connection with bad_certificate
+message.
 
 If the specified compression algorithm is zlib, then the Certificate message
 MUST be compressed with the ZLIB compression algorithm, as defined in [RFC1950].
@@ -129,11 +134,11 @@ The implementations SHOULD bound the memory usage when decompressing the
 Certificate message.
 
 The implementations MUST limit the size of the resulting decompressed chain to
-65536 bytes, and they MUST abort the connection if the size exceeds that limit.
-If the implementations impose an additional smaller limit on the chain size in
-addition to the 65536 byte limit imposed by TLS framing, they MUST apply the
-same limit to the uncompressed chain, as well as reject any compressed chain
-exceeding the limit before decompressing it.
+the specified uncompressed length, and they MUST abort the connection if the
+size exceeds that limit.  If the implementations impose an additional smaller
+limit on the chain size in addition to the 65536 byte limit imposed by TLS
+framing, they MUST apply the same limit to the uncompressed chain before
+starting to decompress it.
 
 # IANA Considerations
 
