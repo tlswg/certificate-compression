@@ -99,14 +99,16 @@ format of the Certificate message is altered as follows:
     } Certificate;
 ~~~
 
-Here, compressed_certificate_message contains the compressed body of the
-Certificate message, in the same format as the server would normally express it.
-The compression algorithm defines how the bytes in the
-compressed_certificate_message are converted into the Certificate message.
-uncomressed_length indicates the length of the Certificate message once it is
-uncompressed.  If after decompression the specified length does not match the
-actual length, the client MUST abort the connection with bad_certificate
-message.
+compressed_certificate_message
+: The compressed body of the Certificate message, in the same format as the
+  server would normally express it. The compression algorithm defines how the
+  bytes in the compressed_certificate_message are converted into the
+  Certificate message.
+
+uncompressed_length
+: The length of the Certificate message once it is uncompressed.  If after
+  decompression the specified length does not match the actual length, the
+  client MUST abort the connection with the "bad_certificate" alert.
 
 If the specified compression algorithm is zlib, then the Certificate message
 MUST be compressed with the ZLIB compression algorithm, as defined in [RFC1950].
@@ -135,10 +137,10 @@ Certificate message.
 
 The implementations MUST limit the size of the resulting decompressed chain to
 the specified uncompressed length, and they MUST abort the connection if the
-size exceeds that limit.  If the implementations impose an additional smaller
-limit on the chain size in addition to the 65536 byte limit imposed by TLS
-framing, they MUST apply the same limit to the uncompressed chain before
-starting to decompress it.
+size exceeds that limit.  Implementations MAY impose a lower limit on the chain
+size in addition to the 65536 byte limit imposed by TLS framing, in which case
+they MUST apply the same limit to the uncompressed chain before starting to
+decompress it.
 
 # IANA Considerations
 
