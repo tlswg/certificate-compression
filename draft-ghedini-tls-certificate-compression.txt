@@ -4,9 +4,9 @@
 
 Network Working Group                                         A. Ghedini
 Internet-Draft                                          Cloudflare, Inc.
-Expires: August 6, 2017                                      V. Vasiliev
+Expires: August 12, 2017                                     V. Vasiliev
                                                                   Google
-                                                       February 02, 2017
+                                                       February 08, 2017
 
 
          Transport Layer Security (TLS) Certificate Compression
@@ -35,7 +35,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 6, 2017.
+   This Internet-Draft will expire on August 12, 2017.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Ghedini & Vasiliev       Expires August 6, 2017                 [Page 1]
+Ghedini & Vasiliev       Expires August 12, 2017                [Page 1]
 
 Internet-Draft         TLS Certificate Compression         February 2017
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ghedini & Vasiliev       Expires August 6, 2017                 [Page 2]
+Ghedini & Vasiliev       Expires August 12, 2017                [Page 2]
 
 Internet-Draft         TLS Certificate Compression         February 2017
 
@@ -141,6 +141,7 @@ Internet-Draft         TLS Certificate Compression         February 2017
    follows:
 
        struct {
+            uint16 uncompressed_length;
             opaque compressed_certificate_message<1..2^16-1>;
        } Certificate;
 
@@ -148,7 +149,10 @@ Internet-Draft         TLS Certificate Compression         February 2017
    the Certificate message, in the same format as the server would
    normally express it.  The compression algorithm defines how the bytes
    in the compressed_certificate_message are converted into the
-   Certificate message.
+   Certificate message.  uncomressed_length indicates the length of the
+   Certificate message once it is uncompressed.  If after decompression
+   the specified length does not match the actual length, the client
+   MUST abort the connection with bad_certificate message.
 
    If the specified compression algorithm is zlib, then the Certificate
    message MUST be compressed with the ZLIB compression algorithm, as
@@ -156,19 +160,19 @@ Internet-Draft         TLS Certificate Compression         February 2017
    brotli, the Certificate message MUST be compressed with the Brotli
    compression algorithm as defined in [RFC7932].
 
-   If the client cannot decompress the received Certificate message from
-   the server, it MUST tear down the connection with the
-   "bad_certificate" alert.
 
 
 
 
 
-
-Ghedini & Vasiliev       Expires August 6, 2017                 [Page 3]
+Ghedini & Vasiliev       Expires August 12, 2017                [Page 3]
 
 Internet-Draft         TLS Certificate Compression         February 2017
 
+
+   If the client cannot decompress the received Certificate message from
+   the server, it MUST tear down the connection with the
+   "bad_certificate" alert.
 
    The extension only affects the Certificate message from the server.
    It does not change the format of the Certificate message sent by the
@@ -190,12 +194,11 @@ Internet-Draft         TLS Certificate Compression         February 2017
    the Certificate message.
 
    The implementations MUST limit the size of the resulting decompressed
-   chain to 65536 bytes, and they MUST abort the connection if the size
-   exceeds that limit.  If the implementations impose an additional
-   smaller limit on the chain size in addition to the 65536 byte limit
-   imposed by TLS framing, they MUST apply the same limit to the
-   uncompressed chain, as well as reject any compressed chain exceeding
-   the limit before decompressing it.
+   chain to the specified uncompressed length, and they MUST abort the
+   connection if the size exceeds that limit.  If the implementations
+   impose an additional smaller limit on the chain size in addition to
+   the 65536 byte limit imposed by TLS framing, they MUST apply the same
+   limit to the uncompressed chain before starting to decompress it.
 
 6.  IANA Considerations
 
@@ -218,10 +221,7 @@ Internet-Draft         TLS Certificate Compression         February 2017
 
 
 
-
-
-
-Ghedini & Vasiliev       Expires August 6, 2017                 [Page 4]
+Ghedini & Vasiliev       Expires August 12, 2017                [Page 4]
 
 Internet-Draft         TLS Certificate Compression         February 2017
 
@@ -277,7 +277,7 @@ Internet-Draft         TLS Certificate Compression         February 2017
 
 
 
-Ghedini & Vasiliev       Expires August 6, 2017                 [Page 5]
+Ghedini & Vasiliev       Expires August 12, 2017                [Page 5]
 
 Internet-Draft         TLS Certificate Compression         February 2017
 
@@ -333,4 +333,4 @@ Authors' Addresses
 
 
 
-Ghedini & Vasiliev       Expires August 6, 2017                 [Page 6]
+Ghedini & Vasiliev       Expires August 12, 2017                [Page 6]
