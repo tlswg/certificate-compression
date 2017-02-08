@@ -108,7 +108,7 @@ compressed_certificate_message
 uncompressed_length
 : The length of the Certificate message once it is uncompressed.  If after
   decompression the specified length does not match the actual length, the
-  client MUST abort the connection with bad_certificate message.
+  client MUST abort the connection with the "bad_certificate" alert.
 
 If the specified compression algorithm is zlib, then the Certificate message
 MUST be compressed with the ZLIB compression algorithm, as defined in [RFC1950].
