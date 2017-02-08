@@ -406,10 +406,10 @@ address {
 <p/>
 
 <dl>
-  <dt>compressed_certificate_message</dt>
-  <dd style="margin-left: 8">The compressed body of the Certificate message, in the same format as the server would normally express it. The compression algorithm defines how the bytes in the compressed_certificate_message are converted into the Certificate message.</dd>
   <dt>uncompressed_length</dt>
   <dd style="margin-left: 8">The length of the Certificate message once it is uncompressed.  If after decompression the specified length does not match the actual length, the client MUST abort the connection with the &#8220;bad_certificate&#8221; alert.</dd>
+  <dt>compressed_certificate_message</dt>
+  <dd style="margin-left: 8">The compressed body of the Certificate message, in the same format as the server would normally express it. The compression algorithm defines how the bytes in the compressed_certificate_message are converted into the Certificate message.</dd>
 </dl>
 <p id="rfc.section.4.p.3">If the specified compression algorithm is zlib, then the Certificate message MUST be compressed with the ZLIB compression algorithm, as defined in <a href="#RFC1950">[RFC1950]</a>.  If the specified compression algorithm is brotli, the Certificate message MUST be compressed with the Brotli compression algorithm as defined in <a href="#RFC7932">[RFC7932]</a>.</p>
 <p id="rfc.section.4.p.4">If the client cannot decompress the received Certificate message from the server, it MUST tear down the connection with the &#8220;bad_certificate&#8221; alert.</p>
