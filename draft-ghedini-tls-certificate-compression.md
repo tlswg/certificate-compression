@@ -99,16 +99,16 @@ format of the Certificate message is altered as follows:
     } Certificate;
 ~~~
 
+uncompressed_length
+: The length of the Certificate message once it is uncompressed.  If after
+  decompression the specified length does not match the actual length, the
+  client MUST abort the connection with the "bad_certificate" alert.
+
 compressed_certificate_message
 : The compressed body of the Certificate message, in the same format as the
   server would normally express it. The compression algorithm defines how the
   bytes in the compressed_certificate_message are converted into the
   Certificate message.
-
-uncompressed_length
-: The length of the Certificate message once it is uncompressed.  If after
-  decompression the specified length does not match the actual length, the
-  client MUST abort the connection with the "bad_certificate" alert.
 
 If the specified compression algorithm is zlib, then the Certificate message
 MUST be compressed with the ZLIB compression algorithm, as defined in [RFC1950].
