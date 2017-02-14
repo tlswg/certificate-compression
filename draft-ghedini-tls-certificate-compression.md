@@ -24,14 +24,9 @@ normative:
   RFC5226:
   RFC5246:
   RFC4366:
+  RFC7250:
   RFC7932:
   RFC7924:
-  TLS-Ext-Registry:
-    author:
-      org: IANA
-    date: 2017
-    title: Transport Layer Security (TLS) Extensions
-    target: http://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml
 
 informative:
 
@@ -128,7 +123,7 @@ The extension only affects the Certificate message from the server.  It does not
 change the format of the Certificate message sent by the client.
 
 If the format of the extension is altered using CertificateType extension
-[TLS-Ext-Registry], the resulting altered message is compressed instead.
+[RFC7250], the resulting altered message is compressed instead.
 
 If the server chooses to use cached_info extension [RFC7924] to replace the
 Certificate message with a hash, it MUST NOT send the compress_certificates
