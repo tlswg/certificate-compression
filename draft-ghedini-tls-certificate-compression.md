@@ -24,10 +24,11 @@ normative:
   RFC5226:
   RFC5246:
   RFC4366:
+  RFC7250:
   RFC7932:
+  RFC7924:
 
 informative:
-  RFC7924:
 
 --- abstract
 
@@ -120,6 +121,13 @@ server, it MUST tear down the connection with the "bad_certificate" alert.
 
 The extension only affects the Certificate message from the server.  It does not
 change the format of the Certificate message sent by the client.
+
+If the format of the extension is altered using CertificateType extension
+[RFC7250], the resulting altered message is compressed instead.
+
+If the server chooses to use cached_info extension [RFC7924] to replace the
+Certificate message with a hash, it MUST NOT send the compress_certificates
+extension.
 
 # Security Considerations
 
