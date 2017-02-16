@@ -4,9 +4,9 @@
 
 Network Working Group                                         A. Ghedini
 Internet-Draft                                          Cloudflare, Inc.
-Expires: August 12, 2017                                     V. Vasiliev
+Expires: August 20, 2017                                     V. Vasiliev
                                                                   Google
-                                                       February 08, 2017
+                                                       February 16, 2017
 
 
          Transport Layer Security (TLS) Certificate Compression
@@ -35,7 +35,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 12, 2017.
+   This Internet-Draft will expire on August 20, 2017.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Ghedini & Vasiliev       Expires August 12, 2017                [Page 1]
+Ghedini & Vasiliev       Expires August 20, 2017                [Page 1]
 
 Internet-Draft         TLS Certificate Compression         February 2017
 
@@ -71,9 +71,7 @@ Table of Contents
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
      6.1.  Update of the TLS ExtensionType Registry  . . . . . . . .   4
      6.2.  Registry for Compression Algorithms . . . . . . . . . . .   4
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   5
-     7.2.  Informative References  . . . . . . . . . . . . . . . . .   6
+   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   5
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
 
 1.  Introduction
@@ -106,16 +104,15 @@ Table of Contents
 
    By sending the compress_certificates message, the client indicates to
    the server the certificate compression algorithms it supports.  The
+   "extension_data" field of this extension in the ClientHello SHALL
+   contain a CertificateCompressionAlgorithms value:
 
 
 
-Ghedini & Vasiliev       Expires August 12, 2017                [Page 2]
+Ghedini & Vasiliev       Expires August 20, 2017                [Page 2]
 
 Internet-Draft         TLS Certificate Compression         February 2017
 
-
-   "extension_data" field of this extension in the ClientHello SHALL
-   contain a CertificateCompressionAlgorithms value:
 
        enum {
            zlib(0),
@@ -162,21 +159,28 @@ Internet-Draft         TLS Certificate Compression         February 2017
    brotli, the Certificate message MUST be compressed with the Brotli
    compression algorithm as defined in [RFC7932].
 
-
-
-
-Ghedini & Vasiliev       Expires August 12, 2017                [Page 3]
-
-Internet-Draft         TLS Certificate Compression         February 2017
-
-
    If the client cannot decompress the received Certificate message from
    the server, it MUST tear down the connection with the
    "bad_certificate" alert.
 
+
+
+Ghedini & Vasiliev       Expires August 20, 2017                [Page 3]
+
+Internet-Draft         TLS Certificate Compression         February 2017
+
+
    The extension only affects the Certificate message from the server.
    It does not change the format of the Certificate message sent by the
    client.
+
+   If the format of the extension is altered using CertificateType
+   extension [RFC7250], the resulting altered message is compressed
+   instead.
+
+   If the server chooses to use cached_info extension [RFC7924] to
+   replace the Certificate message with a hash, it MUST NOT send the
+   compress_certificates extension.
 
 5.  Security Considerations
 
@@ -214,17 +218,15 @@ Internet-Draft         TLS Certificate Compression         February 2017
    "Certificate Compression Algorithm IDs", under the existing
    "Transport Layer Security (TLS) Extensions" heading.
 
-   The entries in the registry are:
 
 
 
-
-
-
-Ghedini & Vasiliev       Expires August 12, 2017                [Page 4]
+Ghedini & Vasiliev       Expires August 20, 2017                [Page 4]
 
 Internet-Draft         TLS Certificate Compression         February 2017
 
+
+   The entries in the registry are:
 
               +------------------+--------------------------+
               | Algorithm Number | Description              |
@@ -241,9 +243,7 @@ Internet-Draft         TLS Certificate Compression         February 2017
    Required" policy otherwise (see [RFC5226] for the definition of
    relevant policies).
 
-7.  References
-
-7.1.  Normative References
+7.  Normative References
 
    [RFC1950]  Deutsch, P. and J-L. Gailly, "ZLIB Compressed Data Format
               Specification version 3.3", RFC 1950,
@@ -270,24 +270,32 @@ Internet-Draft         TLS Certificate Compression         February 2017
               DOI 10.17487/RFC5246, August 2008,
               <http://www.rfc-editor.org/info/rfc5246>.
 
-   [RFC7932]  Alakuijala, J. and Z. Szabadka, "Brotli Compressed Data
-              Format", RFC 7932, DOI 10.17487/RFC7932, July 2016,
-              <http://www.rfc-editor.org/info/rfc7932>.
 
 
 
 
-Ghedini & Vasiliev       Expires August 12, 2017                [Page 5]
+
+
+
+Ghedini & Vasiliev       Expires August 20, 2017                [Page 5]
 
 Internet-Draft         TLS Certificate Compression         February 2017
 
 
-7.2.  Informative References
+   [RFC7250]  Wouters, P., Ed., Tschofenig, H., Ed., Gilmore, J.,
+              Weiler, S., and T. Kivinen, "Using Raw Public Keys in
+              Transport Layer Security (TLS) and Datagram Transport
+              Layer Security (DTLS)", RFC 7250, DOI 10.17487/RFC7250,
+              June 2014, <http://www.rfc-editor.org/info/rfc7250>.
 
    [RFC7924]  Santesson, S. and H. Tschofenig, "Transport Layer Security
               (TLS) Cached Information Extension", RFC 7924,
               DOI 10.17487/RFC7924, July 2016,
               <http://www.rfc-editor.org/info/rfc7924>.
+
+   [RFC7932]  Alakuijala, J. and Z. Szabadka, "Brotli Compressed Data
+              Format", RFC 7932, DOI 10.17487/RFC7932, July 2016,
+              <http://www.rfc-editor.org/info/rfc7932>.
 
 Authors' Addresses
 
@@ -325,12 +333,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-Ghedini & Vasiliev       Expires August 12, 2017                [Page 6]
+Ghedini & Vasiliev       Expires August 20, 2017                [Page 6]
