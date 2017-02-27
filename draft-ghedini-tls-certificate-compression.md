@@ -95,8 +95,8 @@ format of the Certificate message is altered as follows:
 
 ~~~
     struct {
-         uint16 uncompressed_length;
-         opaque compressed_certificate_message<1..2^16-1>;
+         uint24 uncompressed_length;
+         opaque compressed_certificate_message<1..2^24-1>;
     } Certificate;
 ~~~
 
@@ -146,8 +146,8 @@ Certificate message.
 The implementations MUST limit the size of the resulting decompressed chain to
 the specified uncompressed length, and they MUST abort the connection if the
 size exceeds that limit.  Implementations MAY impose a lower limit on the chain
-size in addition to the 65536 byte limit imposed by TLS framing, in which case
-they MUST apply the same limit to the uncompressed chain before starting to
+size in addition to the 16777216 byte limit imposed by TLS framing, in which
+case they MUST apply the same limit to the uncompressed chain before starting to
 decompress it.
 
 # IANA Considerations
