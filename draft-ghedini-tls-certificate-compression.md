@@ -50,7 +50,7 @@ transmitting certificates already shared in an earlier handshake, but it
 doesn't help when the client connects to a server for the first time and
 doesn't already have knowledge of the server's certificate chain.
 
-This document describes a mechanism that would allow certificates to be
+This document describes a mechanism that would allow server certificates to be
 compressed during full handshakes.
 
 # Notational Conventions
@@ -61,13 +61,14 @@ meaning defined in [RFC2119].
 
 # Negotiating Certificate Compression
 
-This document defines a new extension type (compress_certificates(TBD)), which
-is used by the client and the server to negotiate the use of compression as well
-as the choice of the compression algorithm.
+This document defines a new extension type (compress_server_certificates(TBD)),
+which is used by the client and the server to negotiate the use of compression
+for the server certificate chain, as well as the choice of the compression
+algorithm.
 
-By sending the compress_certificates message, the client indicates to the server
-the certificate compression algorithms it supports.  The "extension_data" field
-of this extension in the ClientHello SHALL contain a
+By sending the compress_server_certificates message, the client indicates to the
+server the certificate compression algorithms it supports.  The "extension_data"
+field of this extension in the ClientHello SHALL contain a
 CertificateCompressionAlgorithms value:
 
 ~~~
@@ -86,7 +87,7 @@ If the server supports any of the algorithms offered in the ClientHello, it MAY
 respond with an extension indicating which compression algorithm it chose.  In
 that case, the extension_data SHALL be a CertificateCompressionAlgorithm value
 corresponding to the chosen algorithm.  If the server has chosen to not use any
-compression, it MUST NOT send the compress_certificates extension.
+compression, it MUST NOT send the compress_server_certificates extension.
 
 # Server Certificate Message
 
@@ -126,8 +127,8 @@ If the format of the extension is altered using CertificateType extension
 [RFC7250], the resulting altered message is compressed instead.
 
 If the server chooses to use cached_info extension [RFC7924] to replace the
-Certificate message with a hash, it MUST NOT send the compress_certificates
-extension.
+Certificate message with a hash, it MUST NOT send the
+compress_server_certificates extension.
 
 # Security Considerations
 
@@ -154,7 +155,7 @@ decompress it.
 
 ## Update of the TLS ExtensionType Registry
 
-Create an entry, compress_certificates(TBD), in the existing registry for
+Create an entry, compress_server_certificates(TBD), in the existing registry for
 ExtensionType (defined in [RFC5246]).
 
 ## Registry for Compression Algorithms
