@@ -124,7 +124,7 @@ server, it MUST tear down the connection with the "bad_certificate" alert.
 The extension only affects the Certificate message from the server.  It does not
 change the format of the Certificate message sent by the client.
 
-If the format of the extension is altered using the server_certificate_type
+If the format of the message is altered using the server_certificate_type
 extension [RFC7250], the resulting altered message is compressed instead.
 
 If the server chooses to use the cached_info extension [RFC7924] to replace
