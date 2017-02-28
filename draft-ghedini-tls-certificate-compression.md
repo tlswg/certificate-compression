@@ -2,6 +2,7 @@
 title: Transport Layer Security (TLS) Certificate Compression
 docname: draft-ghedini-tls-certificate-compression-latest
 abbrev: TLS Certificate Compression
+category: std
 
 stand_alone: yes
 pi: [toc, sortrefs, symrefs, docmapping]
