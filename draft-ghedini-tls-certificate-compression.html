@@ -387,7 +387,7 @@ address {
     } CertificateCompressionAlgorithm;
 
     struct {
-        CertificateCompressionAlgorithm algorithms&lt;1..2^8-1&gt;;
+        CertificateCompressionAlgorithm algorithms&lt;1..2^8&gt;;
     } CertificateCompressionAlgorithms;
 </pre>
 <p id="rfc.section.3.p.3">If the server supports any of the algorithms offered in the ClientHello, it MAY respond with an extension indicating which compression algorithm it chose.  In that case, the extension_data SHALL be a CertificateCompressionAlgorithm value corresponding to the chosen algorithm.  If the server has chosen to not use any compression, it MUST NOT send the compress_server_certificates extension.</p>

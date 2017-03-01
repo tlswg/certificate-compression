@@ -124,7 +124,7 @@ Internet-Draft         TLS Certificate Compression            March 2017
        } CertificateCompressionAlgorithm;
 
        struct {
-           CertificateCompressionAlgorithm algorithms<1..2^8-1>;
+           CertificateCompressionAlgorithm algorithms<1..2^8>;
        } CertificateCompressionAlgorithms;
 
    If the server supports any of the algorithms offered in the
