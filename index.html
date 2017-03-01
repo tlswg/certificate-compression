@@ -314,11 +314,11 @@ address {
   <td class="right">Cloudflare, Inc.</td>
 </tr>
 <tr>
-  <td class="left">Intended status: Standards Track</td>
+  <td class="left">Expires: September 2, 2017</td>
   <td class="right">V. Vasiliev</td>
 </tr>
 <tr>
-  <td class="left">Expires: September 2, 2017</td>
+  <td class="left"></td>
   <td class="right">Google</td>
 </tr>
 <tr>
@@ -395,8 +395,8 @@ address {
 <p id="rfc.section.4.p.1">If the server picks a compression algorithm and sends it in the ServerHello, the format of the Certificate message is altered as follows:</p>
 <pre>
     struct {
-         uint24 uncompressed_length;
-         opaque compressed_certificate_message&lt;1..2^24-1&gt;;
+         uint16 uncompressed_length;
+         opaque compressed_certificate_message&lt;1..2^16-1&gt;;
     } Certificate;
 </pre>
 <p/>
@@ -410,13 +410,13 @@ address {
 <p id="rfc.section.4.p.3">If the specified compression algorithm is zlib, then the Certificate message MUST be compressed with the ZLIB compression algorithm, as defined in <a href="#RFC1950">[RFC1950]</a>.  If the specified compression algorithm is brotli, the Certificate message MUST be compressed with the Brotli compression algorithm as defined in <a href="#RFC7932">[RFC7932]</a>.</p>
 <p id="rfc.section.4.p.4">If the client cannot decompress the received Certificate message from the server, it MUST tear down the connection with the &#8220;bad_certificate&#8221; alert.</p>
 <p id="rfc.section.4.p.5">The extension only affects the Certificate message from the server.  It does not change the format of the Certificate message sent by the client.</p>
-<p id="rfc.section.4.p.6">If the format of the message is altered using the server_certificate_type extension <a href="#RFC7250">[RFC7250]</a>, the resulting altered message is compressed instead.</p>
-<p id="rfc.section.4.p.7">If the server chooses to use the cached_info extension <a href="#RFC7924">[RFC7924]</a> to replace the Certificate message with a hash, it MUST NOT send the compress_server_certificates extension.</p>
+<p id="rfc.section.4.p.6">If the format of the extension is altered using CertificateType extension <a href="#RFC7250">[RFC7250]</a>, the resulting altered message is compressed instead.</p>
+<p id="rfc.section.4.p.7">If the server chooses to use cached_info extension <a href="#RFC7924">[RFC7924]</a> to replace the Certificate message with a hash, it MUST NOT send the compress_server_certificates extension.</p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
 <p id="rfc.section.5.p.1">After decompression, the Certificate message MUST be processed as if it were encoded without being compressed.  This way, the parsing and the verification have the same security properties as they would have in TLS normally.</p>
 <p id="rfc.section.5.p.2">Since certificate chains are typically presented on a per-server name basis, the attacker does not have control over any individual fragments in the Certificate message, meaning that they cannot leak information about the certificate by modifying the plaintext.</p>
 <p id="rfc.section.5.p.3">The implementations SHOULD bound the memory usage when decompressing the Certificate message.</p>
-<p id="rfc.section.5.p.4">The implementations MUST limit the size of the resulting decompressed chain to the specified uncompressed length, and they MUST abort the connection if the size exceeds that limit.  Implementations MAY impose a lower limit on the chain size in addition to the 16777216 byte limit imposed by TLS framing, in which case they MUST apply the same limit to the uncompressed chain before starting to decompress it.</p>
+<p id="rfc.section.5.p.4">The implementations MUST limit the size of the resulting decompressed chain to the specified uncompressed length, and they MUST abort the connection if the size exceeds that limit.  Implementations MAY impose a lower limit on the chain size in addition to the 65536 byte limit imposed by TLS framing, in which case they MUST apply the same limit to the uncompressed chain before starting to decompress it.</p>
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
 <h2 id="rfc.section.6.1"><a href="#rfc.section.6.1">6.1.</a> <a href="#update-of-the-tls-extensiontype-registry" id="update-of-the-tls-extensiontype-registry">Update of the TLS ExtensionType Registry</a></h2>
 <p id="rfc.section.6.1.p.1">Create an entry, compress_server_certificates(TBD), in the existing registry for ExtensionType (defined in <a href="#RFC5246">[RFC5246]</a>).</p>

@@ -4,8 +4,8 @@
 
 Network Working Group                                         A. Ghedini
 Internet-Draft                                          Cloudflare, Inc.
-Intended status: Standards Track                             V. Vasiliev
-Expires: September 2, 2017                                        Google
+Expires: September 2, 2017                                   V. Vasiliev
+                                                                  Google
                                                           March 01, 2017
 
 
@@ -142,8 +142,8 @@ Internet-Draft         TLS Certificate Compression            March 2017
    follows:
 
        struct {
-            uint24 uncompressed_length;
-            opaque compressed_certificate_message<1..2^24-1>;
+            uint16 uncompressed_length;
+            opaque compressed_certificate_message<1..2^16-1>;
        } Certificate;
 
    uncompressed_length  The length of the Certificate message once it is
@@ -178,11 +178,11 @@ Internet-Draft         TLS Certificate Compression            March 2017
    It does not change the format of the Certificate message sent by the
    client.
 
-   If the format of the message is altered using the
-   server_certificate_type extension [RFC7250], the resulting altered
-   message is compressed instead.
+   If the format of the extension is altered using CertificateType
+   extension [RFC7250], the resulting altered message is compressed
+   instead.
 
-   If the server chooses to use the cached_info extension [RFC7924] to
+   If the server chooses to use cached_info extension [RFC7924] to
    replace the Certificate message with a hash, it MUST NOT send the
    compress_server_certificates extension.
 
@@ -204,10 +204,9 @@ Internet-Draft         TLS Certificate Compression            March 2017
    The implementations MUST limit the size of the resulting decompressed
    chain to the specified uncompressed length, and they MUST abort the
    connection if the size exceeds that limit.  Implementations MAY
-   impose a lower limit on the chain size in addition to the 16777216
-   byte limit imposed by TLS framing, in which case they MUST apply the
-   same limit to the uncompressed chain before starting to decompress
-   it.
+   impose a lower limit on the chain size in addition to the 65536 byte
+   limit imposed by TLS framing, in which case they MUST apply the same
+   limit to the uncompressed chain before starting to decompress it.
 
 6.  IANA Considerations
 
@@ -215,6 +214,7 @@ Internet-Draft         TLS Certificate Compression            March 2017
 
    Create an entry, compress_server_certificates(TBD), in the existing
    registry for ExtensionType (defined in [RFC5246]).
+
 
 
 
