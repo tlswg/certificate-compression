@@ -4,9 +4,9 @@
 
 Network Working Group                                         A. Ghedini
 Internet-Draft                                          Cloudflare, Inc.
-Expires: August 20, 2017                                     V. Vasiliev
-                                                                  Google
-                                                       February 16, 2017
+Intended status: Standards Track                             V. Vasiliev
+Expires: September 2, 2017                                        Google
+                                                          March 01, 2017
 
 
          Transport Layer Security (TLS) Certificate Compression
@@ -35,7 +35,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 20, 2017.
+   This Internet-Draft will expire on September 2, 2017.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Ghedini & Vasiliev       Expires August 20, 2017                [Page 1]
+Ghedini & Vasiliev      Expires September 2, 2017               [Page 1]
 
-Internet-Draft         TLS Certificate Compression         February 2017
+Internet-Draft         TLS Certificate Compression            March 2017
 
 
    the Trust Legal Provisions and are provided without warranty as
@@ -70,7 +70,7 @@ Table of Contents
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
      6.1.  Update of the TLS ExtensionType Registry  . . . . . . . .   4
-     6.2.  Registry for Compression Algorithms . . . . . . . . . . .   4
+     6.2.  Registry for Compression Algorithms . . . . . . . . . . .   5
    7.  Normative References  . . . . . . . . . . . . . . . . . . . .   5
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
 
@@ -86,8 +86,8 @@ Table of Contents
    for the first time and doesn't already have knowledge of the server's
    certificate chain.
 
-   This document describes a mechanism that would allow certificates to
-   be compressed during full handshakes.
+   This document describes a mechanism that would allow server
+   certificates to be compressed during full handshakes.
 
 2.  Notational Conventions
 
@@ -98,21 +98,24 @@ Table of Contents
 3.  Negotiating Certificate Compression
 
    This document defines a new extension type
-   (compress_certificates(TBD)), which is used by the client and the
-   server to negotiate the use of compression as well as the choice of
-   the compression algorithm.
+   (compress_server_certificates(TBD)), which is used by the client and
+   the server to negotiate the use of compression for the server
+   certificate chain, as well as the choice of the compression
+   algorithm.
 
-   By sending the compress_certificates message, the client indicates to
-   the server the certificate compression algorithms it supports.  The
-   "extension_data" field of this extension in the ClientHello SHALL
-   contain a CertificateCompressionAlgorithms value:
-
+   By sending the compress_server_certificates message, the client
+   indicates to the server the certificate compression algorithms it
 
 
-Ghedini & Vasiliev       Expires August 20, 2017                [Page 2]
+
+
+Ghedini & Vasiliev      Expires September 2, 2017               [Page 2]
 
-Internet-Draft         TLS Certificate Compression         February 2017
+Internet-Draft         TLS Certificate Compression            March 2017
 
+
+   supports.  The "extension_data" field of this extension in the
+   ClientHello SHALL contain a CertificateCompressionAlgorithms value:
 
        enum {
            zlib(0),
@@ -121,7 +124,7 @@ Internet-Draft         TLS Certificate Compression         February 2017
        } CertificateCompressionAlgorithm;
 
        struct {
-           CertificateCompressionAlgorithm algorithms<1..2^8>;
+           CertificateCompressionAlgorithm algorithms<1..2^8-1>;
        } CertificateCompressionAlgorithms;
 
    If the server supports any of the algorithms offered in the
@@ -129,7 +132,8 @@ Internet-Draft         TLS Certificate Compression         February 2017
    compression algorithm it chose.  In that case, the extension_data
    SHALL be a CertificateCompressionAlgorithm value corresponding to the
    chosen algorithm.  If the server has chosen to not use any
-   compression, it MUST NOT send the compress_certificates extension.
+   compression, it MUST NOT send the compress_server_certificates
+   extension.
 
 4.  Server Certificate Message
 
@@ -138,8 +142,8 @@ Internet-Draft         TLS Certificate Compression         February 2017
    follows:
 
        struct {
-            uint16 uncompressed_length;
-            opaque compressed_certificate_message<1..2^16-1>;
+            uint24 uncompressed_length;
+            opaque compressed_certificate_message<1..2^24-1>;
        } Certificate;
 
    uncompressed_length  The length of the Certificate message once it is
@@ -159,28 +163,28 @@ Internet-Draft         TLS Certificate Compression         February 2017
    brotli, the Certificate message MUST be compressed with the Brotli
    compression algorithm as defined in [RFC7932].
 
+
+
+Ghedini & Vasiliev      Expires September 2, 2017               [Page 3]
+
+Internet-Draft         TLS Certificate Compression            March 2017
+
+
    If the client cannot decompress the received Certificate message from
    the server, it MUST tear down the connection with the
    "bad_certificate" alert.
-
-
-
-Ghedini & Vasiliev       Expires August 20, 2017                [Page 3]
-
-Internet-Draft         TLS Certificate Compression         February 2017
-
 
    The extension only affects the Certificate message from the server.
    It does not change the format of the Certificate message sent by the
    client.
 
-   If the format of the extension is altered using CertificateType
-   extension [RFC7250], the resulting altered message is compressed
-   instead.
+   If the format of the message is altered using the
+   server_certificate_type extension [RFC7250], the resulting altered
+   message is compressed instead.
 
-   If the server chooses to use cached_info extension [RFC7924] to
+   If the server chooses to use the cached_info extension [RFC7924] to
    replace the Certificate message with a hash, it MUST NOT send the
-   compress_certificates extension.
+   compress_server_certificates extension.
 
 5.  Security Considerations
 
@@ -200,16 +204,27 @@ Internet-Draft         TLS Certificate Compression         February 2017
    The implementations MUST limit the size of the resulting decompressed
    chain to the specified uncompressed length, and they MUST abort the
    connection if the size exceeds that limit.  Implementations MAY
-   impose a lower limit on the chain size in addition to the 65536 byte
-   limit imposed by TLS framing, in which case they MUST apply the same
-   limit to the uncompressed chain before starting to decompress it.
+   impose a lower limit on the chain size in addition to the 16777216
+   byte limit imposed by TLS framing, in which case they MUST apply the
+   same limit to the uncompressed chain before starting to decompress
+   it.
 
 6.  IANA Considerations
 
 6.1.  Update of the TLS ExtensionType Registry
 
-   Create an entry, compress_certificates(TBD), in the existing registry
-   for ExtensionType (defined in [RFC5246]).
+   Create an entry, compress_server_certificates(TBD), in the existing
+   registry for ExtensionType (defined in [RFC5246]).
+
+
+
+
+
+
+Ghedini & Vasiliev      Expires September 2, 2017               [Page 4]
+
+Internet-Draft         TLS Certificate Compression            March 2017
+
 
 6.2.  Registry for Compression Algorithms
 
@@ -217,14 +232,6 @@ Internet-Draft         TLS Certificate Compression         February 2017
    supported for compressing the Certificate message, titled
    "Certificate Compression Algorithm IDs", under the existing
    "Transport Layer Security (TLS) Extensions" heading.
-
-
-
-
-Ghedini & Vasiliev       Expires August 20, 2017                [Page 4]
-
-Internet-Draft         TLS Certificate Compression         February 2017
-
 
    The entries in the registry are:
 
@@ -265,22 +272,20 @@ Internet-Draft         TLS Certificate Compression         February 2017
               DOI 10.17487/RFC5226, May 2008,
               <http://www.rfc-editor.org/info/rfc5226>.
 
+
+
+
+
+
+Ghedini & Vasiliev      Expires September 2, 2017               [Page 5]
+
+Internet-Draft         TLS Certificate Compression            March 2017
+
+
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
               (TLS) Protocol Version 1.2", RFC 5246,
               DOI 10.17487/RFC5246, August 2008,
               <http://www.rfc-editor.org/info/rfc5246>.
-
-
-
-
-
-
-
-
-Ghedini & Vasiliev       Expires August 20, 2017                [Page 5]
-
-Internet-Draft         TLS Certificate Compression         February 2017
-
 
    [RFC7250]  Wouters, P., Ed., Tschofenig, H., Ed., Gilmore, J.,
               Weiler, S., and T. Kivinen, "Using Raw Public Keys in
@@ -328,9 +333,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-Ghedini & Vasiliev       Expires August 20, 2017                [Page 6]
+Ghedini & Vasiliev      Expires September 2, 2017               [Page 6]
