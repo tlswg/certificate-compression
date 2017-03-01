@@ -178,7 +178,7 @@ Internet-Draft         TLS Certificate Compression            March 2017
    It does not change the format of the Certificate message sent by the
    client.
 
-   If the format of the message is altered using the
+   If the format of the extension is altered using the
    server_certificate_type extension [RFC7250], the resulting altered
    message is compressed instead.
 
