@@ -4,8 +4,8 @@
 
 Network Working Group                                         A. Ghedini
 Internet-Draft                                          Cloudflare, Inc.
-Expires: September 2, 2017                                   V. Vasiliev
-                                                                  Google
+Intended status: Standards Track                             V. Vasiliev
+Expires: September 2, 2017                                        Google
                                                           March 01, 2017
 
 
@@ -124,7 +124,7 @@ Internet-Draft         TLS Certificate Compression            March 2017
        } CertificateCompressionAlgorithm;
 
        struct {
-           CertificateCompressionAlgorithm algorithms<1..2^8>;
+           CertificateCompressionAlgorithm algorithms<1..2^8-1>;
        } CertificateCompressionAlgorithms;
 
    If the server supports any of the algorithms offered in the
@@ -178,11 +178,11 @@ Internet-Draft         TLS Certificate Compression            March 2017
    It does not change the format of the Certificate message sent by the
    client.
 
-   If the format of the extension is altered using CertificateType
-   extension [RFC7250], the resulting altered message is compressed
-   instead.
+   If the format of the message is altered using the
+   server_certificate_type extension [RFC7250], the resulting altered
+   message is compressed instead.
 
-   If the server chooses to use cached_info extension [RFC7924] to
+   If the server chooses to use the cached_info extension [RFC7924] to
    replace the Certificate message with a hash, it MUST NOT send the
    compress_server_certificates extension.
 
