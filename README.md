@@ -3,8 +3,8 @@
 This is the working area for the Individual internet-draft, "Transport Layer Security (TLS) Certificate Compression".
 
 * [Editor's copy](https://ghedo.github.io/tls-certificate-compression/)
-* [Individual Draft] (https://tools.ietf.org/html/draft-ghedini-tls-certificate-compression)
-* [Compare Individual Draft and Editor's copy] (https://tools.ietf.org/rfcdiff?url1=https://tools.ietf.org/id/draft-ghedini-tls-certificate-compression.txt&url2=https://ghedo.github.io/tls-certificate-compression/draft-ghedini-tls-certificate-compression.txt)
+* [Individual Draft](https://tools.ietf.org/html/draft-ghedini-tls-certificate-compression)
+* [Compare Individual Draft and Editor's copy](https://tools.ietf.org/rfcdiff?url1=https://tools.ietf.org/id/draft-ghedini-tls-certificate-compression.txt&url2=https://ghedo.github.io/tls-certificate-compression/draft-ghedini-tls-certificate-compression.txt)
 
 
 ## Building the Draft
