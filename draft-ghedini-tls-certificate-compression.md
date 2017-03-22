@@ -147,10 +147,10 @@ Certificate message.
 
 The implementations MUST limit the size of the resulting decompressed chain to
 the specified uncompressed length, and they MUST abort the connection if the
-size exceeds that limit.  Implementations MAY impose a lower limit on the chain
-size in addition to the 16777216 byte limit imposed by TLS framing, in which
-case they MUST apply the same limit to the uncompressed chain before starting to
-decompress it.
+size exceeds that limit.  TLS framing imposes 16777216 byte limit on the
+certificate message size, and the implementations MAY impose a limit that is
+lower than that; in both cases, they MUST apply the same limit as if no
+compression were used.
 
 # IANA Considerations
 
