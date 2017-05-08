@@ -5,8 +5,8 @@
 Network Working Group                                         A. Ghedini
 Internet-Draft                                          Cloudflare, Inc.
 Intended status: Standards Track                             V. Vasiliev
-Expires: September 20, 2017                                       Google
-                                                          March 19, 2017
+Expires: November 9, 2017                                         Google
+                                                            May 08, 2017
 
 
          Transport Layer Security (TLS) Certificate Compression
@@ -35,7 +35,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 20, 2017.
+   This Internet-Draft will expire on November 9, 2017.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Ghedini & Vasiliev     Expires September 20, 2017               [Page 1]
+Ghedini & Vasiliev      Expires November 9, 2017                [Page 1]
 
-Internet-Draft         TLS Certificate Compression            March 2017
+Internet-Draft         TLS Certificate Compression              May 2017
 
 
    the Trust Legal Provisions and are provided without warranty as
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Ghedini & Vasiliev     Expires September 20, 2017               [Page 2]
+Ghedini & Vasiliev      Expires November 9, 2017                [Page 2]
 
-Internet-Draft         TLS Certificate Compression            March 2017
+Internet-Draft         TLS Certificate Compression              May 2017
 
 
    supports.  The "extension_data" field of this extension in the
@@ -165,9 +165,9 @@ Internet-Draft         TLS Certificate Compression            March 2017
 
 
 
-Ghedini & Vasiliev     Expires September 20, 2017               [Page 3]
+Ghedini & Vasiliev      Expires November 9, 2017                [Page 3]
 
-Internet-Draft         TLS Certificate Compression            March 2017
+Internet-Draft         TLS Certificate Compression              May 2017
 
 
    If the client cannot decompress the received Certificate message from
@@ -203,11 +203,10 @@ Internet-Draft         TLS Certificate Compression            March 2017
 
    The implementations MUST limit the size of the resulting decompressed
    chain to the specified uncompressed length, and they MUST abort the
-   connection if the size exceeds that limit.  Implementations MAY
-   impose a lower limit on the chain size in addition to the 16777216
-   byte limit imposed by TLS framing, in which case they MUST apply the
-   same limit to the uncompressed chain before starting to decompress
-   it.
+   connection if the size exceeds that limit.  TLS framing imposes
+   16777216 byte limit on the certificate message size, and the
+   implementations MAY impose a limit that is lower than that; in both
+   cases, they MUST apply the same limit as if no compression were used.
 
 6.  IANA Considerations
 
@@ -221,9 +220,10 @@ Internet-Draft         TLS Certificate Compression            March 2017
 
 
 
-Ghedini & Vasiliev     Expires September 20, 2017               [Page 4]
+
+Ghedini & Vasiliev      Expires November 9, 2017                [Page 4]
 
-Internet-Draft         TLS Certificate Compression            March 2017
+Internet-Draft         TLS Certificate Compression              May 2017
 
 
 6.2.  Registry for Compression Algorithms
@@ -277,9 +277,9 @@ Internet-Draft         TLS Certificate Compression            March 2017
 
 
 
-Ghedini & Vasiliev     Expires September 20, 2017               [Page 5]
+Ghedini & Vasiliev      Expires November 9, 2017                [Page 5]
 
-Internet-Draft         TLS Certificate Compression            March 2017
+Internet-Draft         TLS Certificate Compression              May 2017
 
 
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
@@ -333,4 +333,4 @@ Authors' Addresses
 
 
 
-Ghedini & Vasiliev     Expires September 20, 2017               [Page 6]
+Ghedini & Vasiliev      Expires November 9, 2017                [Page 6]

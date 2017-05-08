@@ -294,7 +294,7 @@ address {
 
   <meta name="dct.creator" content="Ghedini, A. and V. Vasiliev" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ghedini-tls-certificate-compression-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-3-19" />
+  <meta name="dct.issued" scheme="ISO8601" content="2017-5-08" />
   <meta name="dct.abstract" content="In Transport Layer Security (TLS) handshakes, certificate chains often take up the majority of the bytes transmitted." />
   <meta name="description" content="In Transport Layer Security (TLS) handshakes, certificate chains often take up the majority of the bytes transmitted." />
 
@@ -318,12 +318,12 @@ address {
   <td class="right">V. Vasiliev</td>
 </tr>
 <tr>
-  <td class="left">Expires: September 20, 2017</td>
+  <td class="left">Expires: November 9, 2017</td>
   <td class="right">Google</td>
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">March 19, 2017</td>
+  <td class="right">May 08, 2017</td>
 </tr>
 
     	
@@ -344,7 +344,7 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 20, 2017.</p>
+<p>This Internet-Draft will expire on November 9, 2017.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -416,7 +416,7 @@ address {
 <p id="rfc.section.5.p.1">After decompression, the Certificate message MUST be processed as if it were encoded without being compressed.  This way, the parsing and the verification have the same security properties as they would have in TLS normally.</p>
 <p id="rfc.section.5.p.2">Since certificate chains are typically presented on a per-server name basis, the attacker does not have control over any individual fragments in the Certificate message, meaning that they cannot leak information about the certificate by modifying the plaintext.</p>
 <p id="rfc.section.5.p.3">The implementations SHOULD bound the memory usage when decompressing the Certificate message.</p>
-<p id="rfc.section.5.p.4">The implementations MUST limit the size of the resulting decompressed chain to the specified uncompressed length, and they MUST abort the connection if the size exceeds that limit.  Implementations MAY impose a lower limit on the chain size in addition to the 16777216 byte limit imposed by TLS framing, in which case they MUST apply the same limit to the uncompressed chain before starting to decompress it.</p>
+<p id="rfc.section.5.p.4">The implementations MUST limit the size of the resulting decompressed chain to the specified uncompressed length, and they MUST abort the connection if the size exceeds that limit.  TLS framing imposes 16777216 byte limit on the certificate message size, and the implementations MAY impose a limit that is lower than that; in both cases, they MUST apply the same limit as if no compression were used.</p>
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
 <h2 id="rfc.section.6.1"><a href="#rfc.section.6.1">6.1.</a> <a href="#update-of-the-tls-extensiontype-registry" id="update-of-the-tls-extensiontype-registry">Update of the TLS ExtensionType Registry</a></h2>
 <p id="rfc.section.6.1.p.1">Create an entry, compress_server_certificates(TBD), in the existing registry for ExtensionType (defined in <a href="#RFC5246">[RFC5246]</a>).</p>
