@@ -1,6 +1,6 @@
 ---
 title: Transport Layer Security (TLS) Certificate Compression
-docname: draft-ghedini-tls-certificate-compression-latest
+docname: draft-ietf-tls-certificate-compression-latest
 abbrev: TLS Certificate Compression
 category: std
 
