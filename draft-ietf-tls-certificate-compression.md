@@ -3,6 +3,8 @@ title: Transport Layer Security (TLS) Certificate Compression
 docname: draft-ietf-tls-certificate-compression-latest
 abbrev: TLS Certificate Compression
 category: std
+area: Security
+workgroup: TLS
 
 stand_alone: yes
 pi: [toc, sortrefs, symrefs, docmapping]
