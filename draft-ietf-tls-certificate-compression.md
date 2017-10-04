@@ -53,7 +53,7 @@ transmitting certificates already shared in an earlier handshake, but it
 doesn't help when the client connects to a server for the first time and
 doesn't already have knowledge of the server's certificate chain.
 
-This document describes a mechanism that would allow server certificates to be
+This document describes a mechanism that would allow certificates to be
 compressed during full handshakes.
 
 # Notational Conventions
@@ -64,12 +64,11 @@ meaning defined in [RFC2119].
 
 # Negotiating Certificate Compression
 
-This document defines a new extension type (compress_server_certificates(TBD)),
-which is used by the client and the server to negotiate the use of compression
-for the server certificate chain, as well as the choice of the compression
-algorithm.
+This document defines a new extension type (compress_certificates(TBD)), which
+is used by the client and the server to negotiate the use of compression for
+their certificate chains, as well as the choice of the compression algorithm.
 
-By sending the compress_server_certificates message, the client indicates to the
+By sending the compress_certificates extension, the client indicates to the
 server the certificate compression algorithms it supports.  The "extension_data"
 field of this extension in the ClientHello SHALL contain a
 CertificateCompressionAlgorithms value:
@@ -88,50 +87,56 @@ CertificateCompressionAlgorithms value:
 
 If the server supports any of the algorithms offered in the ClientHello, it MAY
 respond with an extension indicating which compression algorithm it chose.  In
-that case, the extension_data SHALL be a CertificateCompressionAlgorithm value
+that case, the "extension_data" SHALL be a CertificateCompressionAlgorithm value
 corresponding to the chosen algorithm.  If the server has chosen to not use any
-compression, it MUST NOT send the compress_server_certificates extension.
+compression, it MUST NOT send the compress_certificates extension.
 
-# Server Certificate Message
+# Compressed Certificate Message
 
-If the server picks a compression algorithm and sends it in the ServerHello, the
-format of the Certificate message is altered as follows:
+If a compression algorithm has been negotiated, server and client MAY compress
+their corresponding Certificate messages and send them in the form of the
+CompressedCertificate message (replacing the Certificate message).
+
+The CompressedCertificate message is formed as follows:
 
 ~~~
     struct {
          uint24 uncompressed_length;
          opaque compressed_certificate_message<1..2^24-1>;
-    } Certificate;
+    } CompressedCertificate;
 ~~~
 
 uncompressed_length
 : The length of the Certificate message once it is uncompressed.  If after
   decompression the specified length does not match the actual length, the
-  client MUST abort the connection with the "bad_certificate" alert.
+  party receiving the invalid message MUST abort the connection with the
+  "bad_certificate" alert.
 
 compressed_certificate_message
-: The compressed body of the Certificate message, in the same format as the
-  server would normally express it. The compression algorithm defines how the
-  bytes in the compressed_certificate_message are converted into the
+: The compressed body of the Certificate message, in the same format as it
+  would normally be expressed in. The compression algorithm defines how the
+  bytes in the compressed_certificate_message field are converted into the
   Certificate message.
 
-If the specified compression algorithm is zlib, then the Certificate message
+A peer is not required to compress their own Certificate messages even if the
+compress_certficates extension has been negotiated, but MUST be able to
+decompress a received CompressedCertificate message.
+
+If the negotiated compression algorithm is zlib, then the Certificate message
 MUST be compressed with the ZLIB compression algorithm, as defined in [RFC1950].
-If the specified compression algorithm is brotli, the Certificate message MUST
+If the negotiated compression algorithm is brotli, the Certificate message MUST
 be compressed with the Brotli compression algorithm as defined in [RFC7932].
 
-If the client cannot decompress the received Certificate message from the
-server, it MUST tear down the connection with the "bad_certificate" alert.
+If the received CompressedCertificate message cannot be decompressed, the
+connection MUST be tore down with the "bad_certificate" alert.
 
-The extension only affects the Certificate message from the server.  It does not
-change the format of the Certificate message sent by the client.
-
-If the format of the message is altered using the server_certificate_type
-extension [RFC7250], the resulting altered message is compressed instead.
+If the format of the Certificate message is altered using the
+server_certificate_type extension [RFC7250], the resulting altered message is
+compressed instead.
 
 If the server chooses to use the cached_info extension [RFC7924] to replace
 the Certificate message with a hash, it MUST NOT send the
-compress_server_certificates extension.
+compress_certificates extension.
 
 # Security Considerations
 
@@ -139,13 +144,13 @@ After decompression, the Certificate message MUST be processed as if it were
 encoded without being compressed.  This way, the parsing and the verification
 have the same security properties as they would have in TLS normally.
 
-Since certificate chains are typically presented on a per-server name basis, the
-attacker does not have control over any individual fragments in the Certificate
-message, meaning that they cannot leak information about the certificate by
-modifying the plaintext.
+Since certificate chains are typically presented on a per-server name or
+per-user basis, the attacker does not have control over any individual fragments
+in the Certificate message, meaning that they cannot leak information about the
+certificate by modifying the plaintext.
 
 The implementations SHOULD bound the memory usage when decompressing the
-Certificate message.
+CompressedCertificate message.
 
 The implementations MUST limit the size of the resulting decompressed chain to
 the specified uncompressed length, and they MUST abort the connection if the
@@ -158,8 +163,13 @@ compression were used.
 
 ## Update of the TLS ExtensionType Registry
 
-Create an entry, compress_server_certificates(TBD), in the existing registry for
+Create an entry, compress_certificates(TBD), in the existing registry for
 ExtensionType (defined in [RFC5246]).
+
+## Update of the TLS HandshakeType Registry
+
+Create an entry, compressed_certificate(TBD), in the existing registry for
+HandshakeType (defined in [RFC5246]).
 
 ## Registry for Compression Algorithms
 
