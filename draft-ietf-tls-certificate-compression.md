@@ -92,16 +92,20 @@ that case, the extension_data SHALL be a CertificateCompressionAlgorithm value
 corresponding to the chosen algorithm.  If the server has chosen to not use any
 compression, it MUST NOT send the compress_server_certificates extension.
 
-# Server Certificate Message
+# Compressed Certificate Message
 
-If the server picks a compression algorithm and sends it in the ServerHello, the
-format of the Certificate message is altered as follows:
+If the server picks a compression algorithm and sends it in the ServerHello,
+it MAY compress the Certificate message and send it in the form of the
+CompressedCertificate message (instead of sending the Certificate message
+directly).
+
+The CompressedCertificate message is formed as follows:
 
 ~~~
     struct {
          uint24 uncompressed_length;
          opaque compressed_certificate_message<1..2^24-1>;
-    } Certificate;
+    } CompressedCertificate;
 ~~~
 
 uncompressed_length
@@ -120,8 +124,8 @@ MUST be compressed with the ZLIB compression algorithm, as defined in [RFC1950].
 If the specified compression algorithm is brotli, the Certificate message MUST
 be compressed with the Brotli compression algorithm as defined in [RFC7932].
 
-If the client cannot decompress the received Certificate message from the
-server, it MUST tear down the connection with the "bad_certificate" alert.
+If the client cannot decompress the received CompressedCertificate message from
+the server, it MUST tear down the connection with the "bad_certificate" alert.
 
 The extension only affects the Certificate message from the server.  It does not
 change the format of the Certificate message sent by the client.
@@ -145,7 +149,7 @@ message, meaning that they cannot leak information about the certificate by
 modifying the plaintext.
 
 The implementations SHOULD bound the memory usage when decompressing the
-Certificate message.
+CompressedCertificate message.
 
 The implementations MUST limit the size of the resulting decompressed chain to
 the specified uncompressed length, and they MUST abort the connection if the
@@ -160,6 +164,11 @@ compression were used.
 
 Create an entry, compress_server_certificates(TBD), in the existing registry for
 ExtensionType (defined in [RFC5246]).
+
+## Update of the TLS HandshakeType Registry
+
+Create an entry, compressed_certificate(TBD), in the existing registry for
+HandshakeType (defined in [RFC5246]).
 
 ## Registry for Compression Algorithms
 
