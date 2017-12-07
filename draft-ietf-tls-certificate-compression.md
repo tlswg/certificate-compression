@@ -159,6 +159,18 @@ certificate message size, and the implementations MAY impose a limit that is
 lower than that; in both cases, they MUST apply the same limit as if no
 compression were used.
 
+# Middlebox Compatibility
+
+It's been observed that a significant number of middleboxes intercept and try
+to validate the Certificate message exchanged during a TLS handshake. This
+means that middleboxes that don't understand the CompressedCertificate message
+might misbehave and drop connections that adopt certificate compression.
+
+However this is not a problem when using TLS version 1.3 [draft-ietf-tls-tls13]
+and higher, due to the fact that the Certificate (and thus the
+CompressedCertificate) message is encrypted, preventing middleboxes from
+intercepting it.
+
 # IANA Considerations
 
 ## Update of the TLS ExtensionType Registry
