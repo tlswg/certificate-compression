@@ -24,12 +24,12 @@ author:
 normative:
   RFC1950:
   RFC2119:
-  RFC5226:
   RFC5246:
   RFC4366:
   RFC7250:
   RFC7932:
   RFC7924:
+  RFC8126:
 
 informative:
 
@@ -199,6 +199,6 @@ The entries in the registry are:
 
 The values in this registry shall be allocated under "IETF Review" policy for
 values strictly smaller than 64, and under "Specification Required" policy
-otherwise (see [RFC5226] for the definition of relevant policies).
+otherwise (see [RFC8126] for the definition of relevant policies).
 
 --- back
