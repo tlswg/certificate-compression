@@ -71,7 +71,7 @@ message to the peer.  Whenever it is sent by the client as a ClientHello message
 extension ([RFC5246], Section 7.4.1.4), it indicates the support for compressed
 server certificates.  Whenever it is sent by the server as a CertificateRequest
 extension ([I-D.ietf-tls-tls13], Section 4.3.2), it indicates the support for
-compressed client certificates.  Note that CertificareRequest messages are not
+compressed client certificates.  Note that CertificateRequest messages are not
 supported by TLS versions prior to 1.3.
 
 By sending a compress_certificate extension, the sender indicates to the peer
