@@ -75,9 +75,9 @@ compressed client certificates.  Note that CertificareRequest messages are not
 supported by TLS versions prior to 1.3.
 
 By sending a compress_certificate extension, the sender indicates to the peer
-the certificate compression algorithms it is willing to decompress.  The
-"extension_data" field of this extension in the Extension message SHALL contain
-a CertificateCompressionAlgorithms value:
+the certificate compression algorithms it is willing to use for decompression.
+The "extension_data" field of this extension SHALL contain a
+CertificateCompressionAlgorithms value:
 
 ~~~
     enum {
