@@ -65,14 +65,16 @@ meaning defined in [RFC2119].
 
 # Negotiating Certificate Compression
 
+This extension is only supported with TLS 1.3 and newer; if TLS 1.2 or earlier
+is negotiated, the peers MUST ignore this extension.
+
 This document defines a new extension type (compress_certificate(TBD)), which
 can be used to signal the supported compression formats for the Certificate
 message to the peer.  Whenever it is sent by the client as a ClientHello message
-extension ([RFC5246], Section 7.4.1.4), it indicates the support for compressed
-server certificates.  Whenever it is sent by the server as a CertificateRequest
-extension ([I-D.ietf-tls-tls13], Section 4.3.2), it indicates the support for
-compressed client certificates.  Note that CertificateRequest messages are not
-supported by TLS versions prior to 1.3.
+extension ([I-D.ietf-tls-tls13], Section 4.1.2), it indicates the support for
+compressed server certificates.  Whenever it is sent by the server as a
+CertificateRequest extension ([I-D.ietf-tls-tls13], Section 4.3.2), it indicates
+the support for compressed client certificates.
 
 By sending a compress_certificate extension, the sender indicates to the peer
 the certificate compression algorithms it is willing to use for decompression.
@@ -164,11 +166,9 @@ It's been observed that a significant number of middleboxes intercept and try
 to validate the Certificate message exchanged during a TLS handshake. This
 means that middleboxes that don't understand the CompressedCertificate message
 might misbehave and drop connections that adopt certificate compression.
-
-However this is not a problem when using TLS version 1.3 [I-D.ietf-tls-tls13]
-and higher, due to the fact that the Certificate (and thus the
-CompressedCertificate) message is encrypted, preventing middleboxes from
-intercepting it.
+Because of that, the extension is only supported in the versions of TLS where
+the certificate message is encrypted in a way that prevents middleboxes from
+intercepting it, that is, TLS version 1.3 [I-D.ietf-tls-tls13] and higher.
 
 # IANA Considerations
 
