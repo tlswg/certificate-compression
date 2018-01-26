@@ -202,3 +202,12 @@ values strictly smaller than 64, and under "Specification Required" policy
 otherwise (see [RFC8126] for the definition of relevant policies).
 
 --- back
+
+# Acknowledgements
+
+Certificate compression was originally introduced in the QUIC Crypto protocol,
+designed by Adam Langley and Wan-Teh Chang.
+
+This document has benefited from contributions and suggestions from David
+Benjamin, Ryan Hamilton, Ilari Liusvaara, Piotr Sikora, Ian Swett, Martin
+Thomson, Sean Turner and many others.
