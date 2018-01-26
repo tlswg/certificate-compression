@@ -208,4 +208,6 @@ otherwise (see [RFC8126] for the definition of relevant policies).
 Certificate compression was originally introduced in the QUIC Crypto protocol,
 designed by Adam Langley and Wan-Teh Chang.
 
-This document has benefited from contributions and suggestions from David Benjamin, Ryan Hamilton, Ilari Liusvaara, Piotr Sikora, Ian Swett, Martin Thomson, Sean Turner and many others.
+This document has benefited from contributions and suggestions from David
+Benjamin, Ryan Hamilton, Ilari Liusvaara, Piotr Sikora, Ian Swett, Martin
+Thomson, Sean Turner and many others.
