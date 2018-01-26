@@ -113,7 +113,7 @@ The CompressedCertificate message is formed as follows:
 
 algorithm
 : The algorithm used to compress the certificate.  The algorithm MUST be one of
-  the algorithms listed in the peer's compress_certificate message.
+  the algorithms listed in the peer's compress_certificate extension.
 
 uncompressed_length
 : The length of the Certificate message once it is uncompressed.  If after
@@ -133,7 +133,7 @@ If the specified compression algorithm is brotli, the Certificate message MUST
 be compressed with the Brotli compression algorithm as defined in [RFC7932].
 
 If the received CompressedCertificate message cannot be decompressed, the
-connection MUST be tore down with the "bad_certificate" alert.
+connection MUST be torn down with the "bad_certificate" alert.
 
 If the format of the Certificate message is altered using the
 server_certificate_type extension [RFC7250], the resulting altered message is
