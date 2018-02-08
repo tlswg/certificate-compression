@@ -193,8 +193,9 @@ The entries in the registry are:
 
 | Algorithm Number | Description              |
 |:-----------------|:-------------------------|
-| 0                | zlib                     |
-| 1                | brotli                   |
+| 0                | Reserved                 |
+| 1                | zlib                     |
+| 2                | brotli                   |
 | 224 to 255       | Reserved for Private Use |
 
 The values in this registry shall be allocated under "IETF Review" policy for
