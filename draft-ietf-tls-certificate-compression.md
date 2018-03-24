@@ -25,12 +25,13 @@ normative:
   RFC1950:
   RFC2119:
   RFC5246:
-  RFC4366:
   RFC7250:
   RFC7932:
   RFC7924:
   RFC8126:
+  RFC8174:
   I-D.ietf-tls-tls13:
+  I-D.ietf-tls-iana-registry-updates:
 
 informative:
 
@@ -59,9 +60,10 @@ compressed during full handshakes.
 
 # Notational Conventions
 
-The words "MUST", "MUST NOT", "SHALL", "SHOULD", and "MAY" are used in this
-document.  It's not shouting; when they are capitalized, they have the special
-meaning defined in [RFC2119].
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this
+document are to be interpreted as described in BCP 14 {{RFC2119}} {{RFC8174}}
+when, and only when, they appear in all capitals, as shown here.
 
 # Negotiating Certificate Compression
 
@@ -136,8 +138,8 @@ If the received CompressedCertificate message cannot be decompressed, the
 connection MUST be torn down with the "bad_certificate" alert.
 
 If the format of the Certificate message is altered using the
-server_certificate_type extension [RFC7250], the resulting altered message is
-compressed instead.
+server_certificate_type or client_certificate_type extensions [RFC7250], the
+resulting altered message is compressed instead.
 
 # Security Considerations
 
@@ -199,8 +201,12 @@ The entries in the registry are:
 | 224 to 255       | Reserved for Private Use |
 
 The values in this registry shall be allocated under "IETF Review" policy for
-values strictly smaller than 64, and under "Specification Required" policy
-otherwise (see [RFC8126] for the definition of relevant policies).
+values strictly smaller than 64, under "Specification Required" policy for
+values 64-223, and under “Private Use” otherwise (see [RFC8126] for the
+definition of relevant policies).
+
+The procedures for requesting values in the Specification Required space are
+specified in [I-D.ietf-tls-iana-registry-updates].
 
 --- back
 
