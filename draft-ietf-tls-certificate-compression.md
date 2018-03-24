@@ -29,6 +29,7 @@ normative:
   RFC7932:
   RFC7924:
   RFC8126:
+  RFC8174:
   I-D.ietf-tls-tls13:
 
 informative:
@@ -58,9 +59,10 @@ compressed during full handshakes.
 
 # Notational Conventions
 
-The words "MUST", "MUST NOT", "SHALL", "SHOULD", and "MAY" are used in this
-document.  It's not shouting; when they are capitalized, they have the special
-meaning defined in [RFC2119].
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this
+document are to be interpreted as described in BCP 14 {{RFC2119}} {{RFC8174}}
+when, and only when, they appear in all capitals, as shown here.
 
 # Negotiating Certificate Compression
 
