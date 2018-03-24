@@ -25,7 +25,6 @@ normative:
   RFC1950:
   RFC2119:
   RFC5246:
-  RFC4366:
   RFC7250:
   RFC7932:
   RFC7924:
