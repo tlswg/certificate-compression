@@ -31,6 +31,7 @@ normative:
   RFC8126:
   RFC8174:
   I-D.ietf-tls-tls13:
+  I-D.ietf-tls-iana-registry-updates:
 
 informative:
 
@@ -200,8 +201,12 @@ The entries in the registry are:
 | 224 to 255       | Reserved for Private Use |
 
 The values in this registry shall be allocated under "IETF Review" policy for
-values strictly smaller than 64, and under "Specification Required" policy
-otherwise (see [RFC8126] for the definition of relevant policies).
+values strictly smaller than 64, under "Specification Required" policy for
+values 64-223, and under “Private Use” otherwise (see [RFC8126] for the
+definition of relevant policies).
+
+The procedures for requesting values in the Specification Required space are
+specified in [I-D.ietf-tls-iana-registry-updates].
 
 --- back
 
