@@ -136,8 +136,8 @@ If the received CompressedCertificate message cannot be decompressed, the
 connection MUST be torn down with the "bad_certificate" alert.
 
 If the format of the Certificate message is altered using the
-server_certificate_type extension [RFC7250], the resulting altered message is
-compressed instead.
+server_certificate_type or client_certificate_type extensions [RFC7250], the
+resulting altered message is compressed instead.
 
 # Security Considerations
 
