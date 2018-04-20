@@ -85,9 +85,9 @@ CertificateCompressionAlgorithms value:
 
 ~~~
     enum {
-        zlib(0),
-        brotli(1),
-        (255)
+        zlib(1),
+        brotli(2),
+        (65535)
     } CertificateCompressionAlgorithm;
 
     struct {
@@ -193,17 +193,18 @@ IDs", under the existing "Transport Layer Security (TLS) Extensions" heading.
 
 The entries in the registry are:
 
-| Algorithm Number | Description              |
-|:-----------------|:-------------------------|
-| 0                | Reserved                 |
-| 1                | zlib                     |
-| 2                | brotli                   |
-| 224 to 255       | Reserved for Private Use |
+| Algorithm Number | Description                   |
+|:-----------------|:------------------------------|
+| 0                | Reserved                      |
+| 1                | zlib                          |
+| 2                | brotli                        |
+| 16384 to 65535   | Reserved for Experimental Use |
 
 The values in this registry shall be allocated under "IETF Review" policy for
-values strictly smaller than 64, under "Specification Required" policy for
-values 64-223, and under “Private Use” otherwise (see [RFC8126] for the
-definition of relevant policies).
+values strictly smaller than 256, under "Specification Required" policy for
+values 256-16383, and under “Experimental Use” otherwise (see [RFC8126] for the
+definition of relevant policies).  Experimental Use extensions can be used both
+on private networks and over the open Internet.
 
 The procedures for requesting values in the Specification Required space are
 specified in [I-D.ietf-tls-iana-registry-updates].
