@@ -85,9 +85,9 @@ CertificateCompressionAlgorithms value:
 
 ~~~
     enum {
-        zlib(0),
-        brotli(1),
-        (65536)
+        zlib(1),
+        brotli(2),
+        (65535)
     } CertificateCompressionAlgorithm;
 
     struct {
