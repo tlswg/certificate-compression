@@ -70,7 +70,7 @@ when, and only when, they appear in all capitals, as shown here.
 This extension is only supported with TLS 1.3 and newer; if TLS 1.2 or earlier
 is negotiated, the peers MUST ignore this extension.
 
-This document defines a new extension type (compress_certificate(TBD)), which
+This document defines a new extension type (compress_certificate(27)), which
 can be used to signal the supported compression formats for the Certificate
 message to the peer.  Whenever it is sent by the client as a ClientHello message
 extension ([I-D.ietf-tls-tls13], Section 4.1.2), it indicates the support for
@@ -176,13 +176,13 @@ intercepting it, that is, TLS version 1.3 [I-D.ietf-tls-tls13] and higher.
 
 ## Update of the TLS ExtensionType Registry
 
-Create an entry, compress_certificate(TBD), in the existing registry for
+Create an entry, compress_certificate(27), in the existing registry for
 ExtensionType (defined in [I-D.ietf-tls-tls13]), with "TLS 1.3" column values
 being set to "CH, CR".
 
 ## Update of the TLS HandshakeType Registry
 
-Create an entry, compressed_certificate(TBD), in the existing registry for
+Create an entry, compressed_certificate(25), in the existing registry for
 HandshakeType (defined in [RFC5246]).
 
 ## Registry for Compression Algorithms
