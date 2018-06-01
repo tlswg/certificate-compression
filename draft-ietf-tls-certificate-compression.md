@@ -178,7 +178,7 @@ intercepting it, that is, TLS version 1.3 [I-D.ietf-tls-tls13] and higher.
 
 Create an entry, compress_certificate(27), in the existing registry for
 ExtensionType (defined in [I-D.ietf-tls-tls13]), with "TLS 1.3" column values
-being set to "CH, CR".
+being set to "CH, CR", and "Recommended" column being set to "Yes".
 
 ## Update of the TLS HandshakeType Registry
 
