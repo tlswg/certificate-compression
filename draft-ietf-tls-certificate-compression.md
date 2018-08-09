@@ -1,5 +1,5 @@
 ---
-title: Transport Layer Security (TLS) Certificate Compression
+title: TLS Certificate Compression
 docname: draft-ietf-tls-certificate-compression-latest
 abbrev: TLS Certificate Compression
 category: std
@@ -37,7 +37,7 @@ informative:
 
 --- abstract
 
-In Transport Layer Security (TLS) handshakes, certificate chains often take up
+In TLS handshakes, certificate chains often take up
 the majority of the bytes transmitted.
 
 This document describes how certificate chains can be compressed to reduce the
@@ -48,7 +48,7 @@ amount of data transmitted and avoid some round trips.
 # Introduction
 
 In order to reduce latency and improve performance it can be useful to reduce
-the amount of data exchanged during a Transport Layer Security (TLS) handshake.
+the amount of data exchanged during a TLS handshake.
 
 [RFC7924] describes a mechanism that allows a client and a server to avoid
 transmitting certificates already shared in an earlier handshake, but it
