@@ -5,17 +5,17 @@
 TLS                                                           A. Ghedini
 Internet-Draft                                          Cloudflare, Inc.
 Intended status: Standards Track                             V. Vasiliev
-Expires: December 10, 2017                                        Google
-                                                           June 08, 2017
+Expires: February 12, 2019                                        Google
+                                                         August 11, 2018
 
 
-         Transport Layer Security (TLS) Certificate Compression
+                      TLS Certificate Compression
              draft-ietf-tls-certificate-compression-latest
 
 Abstract
 
-   In Transport Layer Security (TLS) handshakes, certificate chains
-   often take up the majority of the bytes transmitted.
+   In TLS handshakes, certificate chains often take up the majority of
+   the bytes transmitted.
 
    This document describes how certificate chains can be compressed to
    reduce the amount of data transmitted and avoid some round trips.
@@ -28,23 +28,23 @@ Status of This Memo
    Internet-Drafts are working documents of the Internet Engineering
    Task Force (IETF).  Note that other groups may also distribute
    working documents as Internet-Drafts.  The list of current Internet-
-   Drafts is at http://datatracker.ietf.org/drafts/current/.
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
 
    Internet-Drafts are draft documents valid for a maximum of six months
    and may be updated, replaced, or obsoleted by other documents at any
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 10, 2017.
+   This Internet-Draft will expire on February 12, 2019.
 
 Copyright Notice
 
-   Copyright (c) 2017 IETF Trust and the persons identified as the
+   Copyright (c) 2018 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents
-   (http://trustee.ietf.org/license-info) in effect on the date of
+   (https://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Ghedini & Vasiliev      Expires December 10, 2017               [Page 1]
+Ghedini & Vasiliev      Expires February 12, 2019               [Page 1]
 
-Internet-Draft         TLS Certificate Compression             June 2017
+Internet-Draft         TLS Certificate Compression           August 2018
 
 
    the Trust Legal Provisions and are provided without warranty as
@@ -66,19 +66,21 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Notational Conventions  . . . . . . . . . . . . . . . . . . .   2
    3.  Negotiating Certificate Compression . . . . . . . . . . . . .   2
-   4.  Server Certificate Message  . . . . . . . . . . . . . . . . .   3
+   4.  Compressed Certificate Message  . . . . . . . . . . . . . . .   3
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
-     6.1.  Update of the TLS ExtensionType Registry  . . . . . . . .   4
-     6.2.  Registry for Compression Algorithms . . . . . . . . . . .   5
-   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   5
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   6
+   6.  Middlebox Compatibility . . . . . . . . . . . . . . . . . . .   5
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
+     7.1.  Update of the TLS ExtensionType Registry  . . . . . . . .   5
+     7.2.  Update of the TLS HandshakeType Registry  . . . . . . . .   5
+     7.3.  Registry for Compression Algorithms . . . . . . . . . . .   5
+   8.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   7
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
 
 1.  Introduction
 
    In order to reduce latency and improve performance it can be useful
-   to reduce the amount of data exchanged during a Transport Layer
-   Security (TLS) handshake.
+   to reduce the amount of data exchanged during a TLS handshake.
 
    [RFC7924] describes a mechanism that allows a client and a server to
    avoid transmitting certificates already shared in an earlier
@@ -86,75 +88,95 @@ Table of Contents
    for the first time and doesn't already have knowledge of the server's
    certificate chain.
 
-   This document describes a mechanism that would allow server
-   certificates to be compressed during full handshakes.
+   This document describes a mechanism that would allow certificates to
+   be compressed during full handshakes.
 
 2.  Notational Conventions
 
-   The words "MUST", "MUST NOT", "SHALL", "SHOULD", and "MAY" are used
-   in this document.  It's not shouting; when they are capitalized, they
-   have the special meaning defined in [RFC2119].
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
 
 3.  Negotiating Certificate Compression
 
+   This extension is only supported with TLS 1.3 and newer; if TLS 1.2
+   or earlier is negotiated, the peers MUST ignore this extension.
+
    This document defines a new extension type
-   (compress_server_certificates(TBD)), which is used by the client and
-   the server to negotiate the use of compression for the server
-   certificate chain, as well as the choice of the compression
-   algorithm.
-
-   By sending the compress_server_certificates message, the client
-   indicates to the server the certificate compression algorithms it
+   (compress_certificate(27)), which can be used to signal the supported
 
 
 
-
-Ghedini & Vasiliev      Expires December 10, 2017               [Page 2]
+Ghedini & Vasiliev      Expires February 12, 2019               [Page 2]
 
-Internet-Draft         TLS Certificate Compression             June 2017
+Internet-Draft         TLS Certificate Compression           August 2018
 
 
-   supports.  The "extension_data" field of this extension in the
-   ClientHello SHALL contain a CertificateCompressionAlgorithms value:
+   compression formats for the Certificate message to the peer.
+   Whenever it is sent by the client as a ClientHello message extension
+   ([I-D.ietf-tls-tls13], Section 4.1.2), it indicates the support for
+   compressed server certificates.  Whenever it is sent by the server as
+   a CertificateRequest extension ([I-D.ietf-tls-tls13], Section 4.3.2),
+   it indicates the support for compressed client certificates.
+
+   By sending a compress_certificate extension, the sender indicates to
+   the peer the certificate compression algorithms it is willing to use
+   for decompression.  The "extension_data" field of this extension
+   SHALL contain a CertificateCompressionAlgorithms value:
 
        enum {
-           zlib(0),
-           brotli(1),
-           (255)
+           zlib(1),
+           brotli(2),
+           (65535)
        } CertificateCompressionAlgorithm;
 
        struct {
            CertificateCompressionAlgorithm algorithms<1..2^8-1>;
        } CertificateCompressionAlgorithms;
 
-   If the server supports any of the algorithms offered in the
-   ClientHello, it MAY respond with an extension indicating which
-   compression algorithm it chose.  In that case, the extension_data
-   SHALL be a CertificateCompressionAlgorithm value corresponding to the
-   chosen algorithm.  If the server has chosen to not use any
-   compression, it MUST NOT send the compress_server_certificates
-   extension.
+   There is no ServerHello extension that the server is required to echo
+   back.
 
-4.  Server Certificate Message
+4.  Compressed Certificate Message
 
-   If the server picks a compression algorithm and sends it in the
-   ServerHello, the format of the Certificate message is altered as
-   follows:
+   If the peer has indicated that it supports compression, server and
+   client MAY compress their corresponding Certificate messages and send
+   them in the form of the CompressedCertificate message (replacing the
+   Certificate message).
+
+   The CompressedCertificate message is formed as follows:
 
        struct {
+            CertificateCompressionAlgorithm algorithm;
             uint24 uncompressed_length;
             opaque compressed_certificate_message<1..2^24-1>;
-       } Certificate;
+       } CompressedCertificate;
+
+   algorithm  The algorithm used to compress the certificate.  The
+      algorithm MUST be one of the algorithms listed in the peer's
+      compress_certificate extension.
 
    uncompressed_length  The length of the Certificate message once it is
       uncompressed.  If after decompression the specified length does
-      not match the actual length, the client MUST abort the connection
-      with the "bad_certificate" alert.
+      not match the actual length, the party receiving the invalid
+
+
+
+
+Ghedini & Vasiliev      Expires February 12, 2019               [Page 3]
+
+Internet-Draft         TLS Certificate Compression           August 2018
+
+
+      message MUST abort the connection with the "bad_certificate"
+      alert.
 
    compressed_certificate_message  The compressed body of the
-      Certificate message, in the same format as the server would
-      normally express it.  The compression algorithm defines how the
-      bytes in the compressed_certificate_message are converted into the
+      Certificate message, in the same format as it would normally be
+      expressed in.  The compression algorithm defines how the bytes in
+      the compressed_certificate_message field are converted into the
       Certificate message.
 
    If the specified compression algorithm is zlib, then the Certificate
@@ -163,28 +185,12 @@ Internet-Draft         TLS Certificate Compression             June 2017
    brotli, the Certificate message MUST be compressed with the Brotli
    compression algorithm as defined in [RFC7932].
 
+   If the received CompressedCertificate message cannot be decompressed,
+   the connection MUST be torn down with the "bad_certificate" alert.
 
-
-Ghedini & Vasiliev      Expires December 10, 2017               [Page 3]
-
-Internet-Draft         TLS Certificate Compression             June 2017
-
-
-   If the client cannot decompress the received Certificate message from
-   the server, it MUST tear down the connection with the
-   "bad_certificate" alert.
-
-   The extension only affects the Certificate message from the server.
-   It does not change the format of the Certificate message sent by the
-   client.
-
-   If the format of the message is altered using the
-   server_certificate_type extension [RFC7250], the resulting altered
-   message is compressed instead.
-
-   If the server chooses to use the cached_info extension [RFC7924] to
-   replace the Certificate message with a hash, it MUST NOT send the
-   compress_server_certificates extension.
+   If the format of the Certificate message is altered using the
+   server_certificate_type or client_certificate_type extensions
+   [RFC7250], the resulting altered message is compressed instead.
 
 5.  Security Considerations
 
@@ -194,12 +200,13 @@ Internet-Draft         TLS Certificate Compression             June 2017
    in TLS normally.
 
    Since certificate chains are typically presented on a per-server name
-   basis, the attacker does not have control over any individual
-   fragments in the Certificate message, meaning that they cannot leak
-   information about the certificate by modifying the plaintext.
+   or per-user basis, the attacker does not have control over any
+   individual fragments in the Certificate message, meaning that they
+   cannot leak information about the certificate by modifying the
+   plaintext.
 
    The implementations SHOULD bound the memory usage when decompressing
-   the Certificate message.
+   the CompressedCertificate message.
 
    The implementations MUST limit the size of the resulting decompressed
    chain to the specified uncompressed length, and they MUST abort the
@@ -208,25 +215,44 @@ Internet-Draft         TLS Certificate Compression             June 2017
    implementations MAY impose a limit that is lower than that; in both
    cases, they MUST apply the same limit as if no compression were used.
 
-6.  IANA Considerations
-
-6.1.  Update of the TLS ExtensionType Registry
-
-   Create an entry, compress_server_certificates(TBD), in the existing
-   registry for ExtensionType (defined in [RFC5246]).
 
 
 
 
 
 
-
-Ghedini & Vasiliev      Expires December 10, 2017               [Page 4]
+Ghedini & Vasiliev      Expires February 12, 2019               [Page 4]
 
-Internet-Draft         TLS Certificate Compression             June 2017
+Internet-Draft         TLS Certificate Compression           August 2018
 
 
-6.2.  Registry for Compression Algorithms
+6.  Middlebox Compatibility
+
+   It's been observed that a significant number of middleboxes intercept
+   and try to validate the Certificate message exchanged during a TLS
+   handshake.  This means that middleboxes that don't understand the
+   CompressedCertificate message might misbehave and drop connections
+   that adopt certificate compression.  Because of that, the extension
+   is only supported in the versions of TLS where the certificate
+   message is encrypted in a way that prevents middleboxes from
+   intercepting it, that is, TLS version 1.3 [I-D.ietf-tls-tls13] and
+   higher.
+
+7.  IANA Considerations
+
+7.1.  Update of the TLS ExtensionType Registry
+
+   Create an entry, compress_certificate(27), in the existing registry
+   for ExtensionType (defined in [I-D.ietf-tls-tls13]), with "TLS 1.3"
+   column values being set to "CH, CR", and "Recommended" column being
+   set to "Yes".
+
+7.2.  Update of the TLS HandshakeType Registry
+
+   Create an entry, compressed_certificate(25), in the existing registry
+   for HandshakeType (defined in [RFC5246]).
+
+7.3.  Registry for Compression Algorithms
 
    This document establishes a registry of compression algorithms
    supported for compressing the Certificate message, titled
@@ -235,72 +261,104 @@ Internet-Draft         TLS Certificate Compression             June 2017
 
    The entries in the registry are:
 
-              +------------------+--------------------------+
-              | Algorithm Number | Description              |
-              +------------------+--------------------------+
-              | 0                | zlib                     |
-              |                  |                          |
-              | 1                | brotli                   |
-              |                  |                          |
-              | 224 to 255       | Reserved for Private Use |
-              +------------------+--------------------------+
+           +------------------+-------------------------------+
+           | Algorithm Number | Description                   |
+           +------------------+-------------------------------+
+           | 0                | Reserved                      |
+           |                  |                               |
+           | 1                | zlib                          |
+           |                  |                               |
+           | 2                | brotli                        |
+           |                  |                               |
+           | 16384 to 65535   | Reserved for Experimental Use |
+           +------------------+-------------------------------+
+
+
+
+
+
+Ghedini & Vasiliev      Expires February 12, 2019               [Page 5]
+
+Internet-Draft         TLS Certificate Compression           August 2018
+
 
    The values in this registry shall be allocated under "IETF Review"
-   policy for values strictly smaller than 64, and under "Specification
-   Required" policy otherwise (see [RFC5226] for the definition of
-   relevant policies).
+   policy for values strictly smaller than 256, under "Specification
+   Required" policy for values 256-16383, and under "Experimental Use"
+   otherwise (see [RFC8126] for the definition of relevant policies).
+   Experimental Use extensions can be used both on private networks and
+   over the open Internet.
 
-7.  Normative References
+   The procedures for requesting values in the Specification Required
+   space are specified in [I-D.ietf-tls-iana-registry-updates].
+
+8.  Normative References
+
+   [I-D.ietf-tls-iana-registry-updates]
+              Salowey, J. and S. Turner, "IANA Registry Updates for
+              Transport Layer Security (TLS) and Datagram Transport
+              Layer Security (DTLS)", draft-ietf-tls-iana-registry-
+              updates-05 (work in progress), May 2018.
+
+   [I-D.ietf-tls-tls13]
+              Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", draft-ietf-tls-tls13-28 (work in progress),
+              March 2018.
 
    [RFC1950]  Deutsch, P. and J-L. Gailly, "ZLIB Compressed Data Format
               Specification version 3.3", RFC 1950,
               DOI 10.17487/RFC1950, May 1996,
-              <http://www.rfc-editor.org/info/rfc1950>.
+              <https://www.rfc-editor.org/info/rfc1950>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
-              <http://www.rfc-editor.org/info/rfc2119>.
-
-   [RFC4366]  Blake-Wilson, S., Nystrom, M., Hopwood, D., Mikkelsen, J.,
-              and T. Wright, "Transport Layer Security (TLS)
-              Extensions", RFC 4366, DOI 10.17487/RFC4366, April 2006,
-              <http://www.rfc-editor.org/info/rfc4366>.
-
-   [RFC5226]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
-              IANA Considerations Section in RFCs", BCP 26, RFC 5226,
-              DOI 10.17487/RFC5226, May 2008,
-              <http://www.rfc-editor.org/info/rfc5226>.
-
-
-
-
-
-
-Ghedini & Vasiliev      Expires December 10, 2017               [Page 5]
-
-Internet-Draft         TLS Certificate Compression             June 2017
-
+              <https://www.rfc-editor.org/info/rfc2119>.
 
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
               (TLS) Protocol Version 1.2", RFC 5246,
               DOI 10.17487/RFC5246, August 2008,
-              <http://www.rfc-editor.org/info/rfc5246>.
+              <https://www.rfc-editor.org/info/rfc5246>.
 
    [RFC7250]  Wouters, P., Ed., Tschofenig, H., Ed., Gilmore, J.,
               Weiler, S., and T. Kivinen, "Using Raw Public Keys in
               Transport Layer Security (TLS) and Datagram Transport
               Layer Security (DTLS)", RFC 7250, DOI 10.17487/RFC7250,
-              June 2014, <http://www.rfc-editor.org/info/rfc7250>.
+              June 2014, <https://www.rfc-editor.org/info/rfc7250>.
 
    [RFC7924]  Santesson, S. and H. Tschofenig, "Transport Layer Security
               (TLS) Cached Information Extension", RFC 7924,
               DOI 10.17487/RFC7924, July 2016,
-              <http://www.rfc-editor.org/info/rfc7924>.
+              <https://www.rfc-editor.org/info/rfc7924>.
+
+
+
+Ghedini & Vasiliev      Expires February 12, 2019               [Page 6]
+
+Internet-Draft         TLS Certificate Compression           August 2018
+
 
    [RFC7932]  Alakuijala, J. and Z. Szabadka, "Brotli Compressed Data
               Format", RFC 7932, DOI 10.17487/RFC7932, July 2016,
-              <http://www.rfc-editor.org/info/rfc7932>.
+              <https://www.rfc-editor.org/info/rfc7932>.
+
+   [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
+              Writing an IANA Considerations Section in RFCs", BCP 26,
+              RFC 8126, DOI 10.17487/RFC8126, June 2017,
+              <https://www.rfc-editor.org/info/rfc8126>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+Appendix A.  Acknowledgements
+
+   Certificate compression was originally introduced in the QUIC Crypto
+   protocol, designed by Adam Langley and Wan-Teh Chang.
+
+   This document has benefited from contributions and suggestions from
+   David Benjamin, Ryan Hamilton, Ilari Liusvaara, Piotr Sikora, Ian
+   Swett, Martin Thomson, Sean Turner and many others.
 
 Authors' Addresses
 
@@ -331,6 +389,4 @@ Authors' Addresses
 
 
 
-
-
-Ghedini & Vasiliev      Expires December 10, 2017               [Page 6]
+Ghedini & Vasiliev      Expires February 12, 2019               [Page 7]

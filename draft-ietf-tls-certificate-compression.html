@@ -5,7 +5,7 @@
 <head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
   <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 
-  <title>Transport Layer Security (TLS) Certificate Compression</title>
+  <title>TLS Certificate Compression</title>
 
   
 <style type="text/css">/*<![CDATA[*/
@@ -276,27 +276,30 @@ address {
   /*]]>*/</style>
 
 
-  <link href="#rfc.toc" rel="Contents"/>
-<link href="#rfc.section.1" rel="Chapter" title="1 Introduction"/>
-<link href="#rfc.section.2" rel="Chapter" title="2 Notational Conventions"/>
-<link href="#rfc.section.3" rel="Chapter" title="3 Negotiating Certificate Compression"/>
-<link href="#rfc.section.4" rel="Chapter" title="4 Server Certificate Message"/>
-<link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations"/>
-<link href="#rfc.section.6" rel="Chapter" title="6 IANA Considerations"/>
-<link href="#rfc.section.6.1" rel="Chapter" title="6.1 Update of the TLS ExtensionType Registry"/>
-<link href="#rfc.section.6.2" rel="Chapter" title="6.2 Registry for Compression Algorithms"/>
-<link href="#rfc.references" rel="Chapter" title="7 Normative References"/>
-<link href="#rfc.authors" rel="Chapter"/>
+  <link href="#rfc.toc" rel="Contents">
+<link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
+<link href="#rfc.section.2" rel="Chapter" title="2 Notational Conventions">
+<link href="#rfc.section.3" rel="Chapter" title="3 Negotiating Certificate Compression">
+<link href="#rfc.section.4" rel="Chapter" title="4 Compressed Certificate Message">
+<link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations">
+<link href="#rfc.section.6" rel="Chapter" title="6 Middlebox Compatibility">
+<link href="#rfc.section.7" rel="Chapter" title="7 IANA Considerations">
+<link href="#rfc.section.7.1" rel="Chapter" title="7.1 Update of the TLS ExtensionType Registry">
+<link href="#rfc.section.7.2" rel="Chapter" title="7.2 Update of the TLS HandshakeType Registry">
+<link href="#rfc.section.7.3" rel="Chapter" title="7.3 Registry for Compression Algorithms">
+<link href="#rfc.references" rel="Chapter" title="8 Normative References">
+<link href="#rfc.appendix.A" rel="Chapter" title="A Acknowledgements">
+<link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.5.1 - http://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.9.8 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Ghedini, A. and V. Vasiliev" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-tls-certificate-compression-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-6-08" />
-  <meta name="dct.abstract" content="In Transport Layer Security (TLS) handshakes, certificate chains often take up the majority of the bytes transmitted." />
-  <meta name="description" content="In Transport Layer Security (TLS) handshakes, certificate chains often take up the majority of the bytes transmitted." />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-08-11" />
+  <meta name="dct.abstract" content="In TLS handshakes, certificate chains often take up the majority of the bytes transmitted." />
+  <meta name="description" content="In TLS handshakes, certificate chains often take up the majority of the bytes transmitted." />
 
 </head>
 
@@ -306,202 +309,246 @@ address {
     <tbody>
     
     	<tr>
-  <td class="left">TLS</td>
-  <td class="right">A. Ghedini</td>
+<td class="left">TLS</td>
+<td class="right">A. Ghedini</td>
 </tr>
 <tr>
-  <td class="left">Internet-Draft</td>
-  <td class="right">Cloudflare, Inc.</td>
+<td class="left">Internet-Draft</td>
+<td class="right">Cloudflare, Inc.</td>
 </tr>
 <tr>
-  <td class="left">Intended status: Standards Track</td>
-  <td class="right">V. Vasiliev</td>
+<td class="left">Intended status: Standards Track</td>
+<td class="right">V. Vasiliev</td>
 </tr>
 <tr>
-  <td class="left">Expires: December 10, 2017</td>
-  <td class="right">Google</td>
+<td class="left">Expires: February 12, 2019</td>
+<td class="right">Google</td>
 </tr>
 <tr>
-  <td class="left"></td>
-  <td class="right">June 08, 2017</td>
+<td class="left"></td>
+<td class="right">August 11, 2018</td>
 </tr>
 
     	
     </tbody>
   </table>
 
-  <p class="title">Transport Layer Security (TLS) Certificate Compression<br />
+  <p class="title">TLS Certificate Compression<br />
   <span class="filename">draft-ietf-tls-certificate-compression-latest</span></p>
   
-  <h1 id="rfc.abstract">
-  <a href="#rfc.abstract">Abstract</a>
-</h1>
-<p>In Transport Layer Security (TLS) handshakes, certificate chains often take up the majority of the bytes transmitted.</p>
+  <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
+<p>In TLS handshakes, certificate chains often take up the majority of the bytes transmitted.</p>
 <p>This document describes how certificate chains can be compressed to reduce the amount of data transmitted and avoid some round trips.</p>
-<h1 id="rfc.status">
-  <a href="#rfc.status">Status of This Memo</a>
-</h1>
+<h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
-<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 10, 2017.</p>
-<h1 id="rfc.copyrightnotice">
-  <a href="#rfc.copyrightnotice">Copyright Notice</a>
-</h1>
-<p>Copyright (c) 2017 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
-<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (http://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
+<p>This Internet-Draft will expire on February 12, 2019.</p>
+<h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
+<p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
 
   
   <hr class="noprint" />
   <h1 class="np" id="rfc.toc"><a href="#rfc.toc">Table of Contents</a></h1>
   <ul class="toc">
 
-  	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
-<li>2.   <a href="#rfc.section.2">Notational Conventions</a></li>
-<li>3.   <a href="#rfc.section.3">Negotiating Certificate Compression</a></li>
-<li>4.   <a href="#rfc.section.4">Server Certificate Message</a></li>
-<li>5.   <a href="#rfc.section.5">Security Considerations</a></li>
-<li>6.   <a href="#rfc.section.6">IANA Considerations</a></li>
-<ul><li>6.1.   <a href="#rfc.section.6.1">Update of the TLS ExtensionType Registry</a></li>
-<li>6.2.   <a href="#rfc.section.6.2">Registry for Compression Algorithms</a></li>
-</ul><li>7.   <a href="#rfc.references">Normative References</a></li>
-<li><a href="#rfc.authors">Authors' Addresses</a></li>
+  	<li>1.   <a href="#rfc.section.1">Introduction</a>
+</li>
+<li>2.   <a href="#rfc.section.2">Notational Conventions</a>
+</li>
+<li>3.   <a href="#rfc.section.3">Negotiating Certificate Compression</a>
+</li>
+<li>4.   <a href="#rfc.section.4">Compressed Certificate Message</a>
+</li>
+<li>5.   <a href="#rfc.section.5">Security Considerations</a>
+</li>
+<li>6.   <a href="#rfc.section.6">Middlebox Compatibility</a>
+</li>
+<li>7.   <a href="#rfc.section.7">IANA Considerations</a>
+</li>
+<ul><li>7.1.   <a href="#rfc.section.7.1">Update of the TLS ExtensionType Registry</a>
+</li>
+<li>7.2.   <a href="#rfc.section.7.2">Update of the TLS HandshakeType Registry</a>
+</li>
+<li>7.3.   <a href="#rfc.section.7.3">Registry for Compression Algorithms</a>
+</li>
+</ul><li>8.   <a href="#rfc.references">Normative References</a>
+</li>
+<li>Appendix A.   <a href="#rfc.appendix.A">Acknowledgements</a>
+</li>
+<li><a href="#rfc.authors">Authors' Addresses</a>
+</li>
 
 
   </ul>
 
-  <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
-<p id="rfc.section.1.p.1">In order to reduce latency and improve performance it can be useful to reduce the amount of data exchanged during a Transport Layer Security (TLS) handshake.</p>
-<p><a href="#RFC7924">[RFC7924]</a> describes a mechanism that allows a client and a server to avoid transmitting certificates already shared in an earlier handshake, but it doesn&#8217;t help when the client connects to a server for the first time and doesn&#8217;t already have knowledge of the server&#8217;s certificate chain.</p>
-<p id="rfc.section.1.p.3">This document describes a mechanism that would allow server certificates to be compressed during full handshakes.</p>
-<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#notational-conventions" id="notational-conventions">Notational Conventions</a></h1>
-<p id="rfc.section.2.p.1">The words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;SHALL&#8221;, &#8220;SHOULD&#8221;, and &#8220;MAY&#8221; are used in this document.  It&#8217;s not shouting; when they are capitalized, they have the special meaning defined in <a href="#RFC2119">[RFC2119]</a>.</p>
-<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#negotiating-certificate-compression" id="negotiating-certificate-compression">Negotiating Certificate Compression</a></h1>
-<p id="rfc.section.3.p.1">This document defines a new extension type (compress_server_certificates(TBD)), which is used by the client and the server to negotiate the use of compression for the server certificate chain, as well as the choice of the compression algorithm.</p>
-<p id="rfc.section.3.p.2">By sending the compress_server_certificates message, the client indicates to the server the certificate compression algorithms it supports.  The &#8220;extension_data&#8221; field of this extension in the ClientHello SHALL contain a CertificateCompressionAlgorithms value:</p>
+  <h1 id="rfc.section.1">
+<a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
+</h1>
+<p id="rfc.section.1.p.1">In order to reduce latency and improve performance it can be useful to reduce the amount of data exchanged during a TLS handshake.</p>
+<p><a href="#RFC7924" class="xref">[RFC7924]</a> describes a mechanism that allows a client and a server to avoid transmitting certificates already shared in an earlier handshake, but it doesn&#8217;t help when the client connects to a server for the first time and doesn&#8217;t already have knowledge of the server&#8217;s certificate chain.</p>
+<p id="rfc.section.1.p.3">This document describes a mechanism that would allow certificates to be compressed during full handshakes.</p>
+<h1 id="rfc.section.2">
+<a href="#rfc.section.2">2.</a> <a href="#notational-conventions" id="notational-conventions">Notational Conventions</a>
+</h1>
+<p id="rfc.section.2.p.1">The key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;NOT RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; in this document are to be interpreted as described in BCP 14 <a href="#RFC2119" class="xref">[RFC2119]</a> <a href="#RFC8174" class="xref">[RFC8174]</a> when, and only when, they appear in all capitals, as shown here.</p>
+<h1 id="rfc.section.3">
+<a href="#rfc.section.3">3.</a> <a href="#negotiating-certificate-compression" id="negotiating-certificate-compression">Negotiating Certificate Compression</a>
+</h1>
+<p id="rfc.section.3.p.1">This extension is only supported with TLS 1.3 and newer; if TLS 1.2 or earlier is negotiated, the peers MUST ignore this extension.</p>
+<p id="rfc.section.3.p.2">This document defines a new extension type (compress_certificate(27)), which can be used to signal the supported compression formats for the Certificate message to the peer.  Whenever it is sent by the client as a ClientHello message extension (<a href="#I-D.ietf-tls-tls13" class="xref">[I-D.ietf-tls-tls13]</a>, Section 4.1.2), it indicates the support for compressed server certificates.  Whenever it is sent by the server as a CertificateRequest extension (<a href="#I-D.ietf-tls-tls13" class="xref">[I-D.ietf-tls-tls13]</a>, Section 4.3.2), it indicates the support for compressed client certificates.</p>
+<p id="rfc.section.3.p.3">By sending a compress_certificate extension, the sender indicates to the peer the certificate compression algorithms it is willing to use for decompression.  The &#8220;extension_data&#8221; field of this extension SHALL contain a CertificateCompressionAlgorithms value:</p>
 <pre>
     enum {
-        zlib(0),
-        brotli(1),
-        (255)
+        zlib(1),
+        brotli(2),
+        (65535)
     } CertificateCompressionAlgorithm;
 
     struct {
         CertificateCompressionAlgorithm algorithms&lt;1..2^8-1&gt;;
     } CertificateCompressionAlgorithms;
 </pre>
-<p id="rfc.section.3.p.3">If the server supports any of the algorithms offered in the ClientHello, it MAY respond with an extension indicating which compression algorithm it chose.  In that case, the extension_data SHALL be a CertificateCompressionAlgorithm value corresponding to the chosen algorithm.  If the server has chosen to not use any compression, it MUST NOT send the compress_server_certificates extension.</p>
-<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#server-certificate-message" id="server-certificate-message">Server Certificate Message</a></h1>
-<p id="rfc.section.4.p.1">If the server picks a compression algorithm and sends it in the ServerHello, the format of the Certificate message is altered as follows:</p>
+<p id="rfc.section.3.p.4">There is no ServerHello extension that the server is required to echo back.</p>
+<h1 id="rfc.section.4">
+<a href="#rfc.section.4">4.</a> <a href="#compressed-certificate-message" id="compressed-certificate-message">Compressed Certificate Message</a>
+</h1>
+<p id="rfc.section.4.p.1">If the peer has indicated that it supports compression, server and client MAY compress their corresponding Certificate messages and send them in the form of the CompressedCertificate message (replacing the Certificate message).</p>
+<p id="rfc.section.4.p.2">The CompressedCertificate message is formed as follows:</p>
 <pre>
     struct {
+         CertificateCompressionAlgorithm algorithm;
          uint24 uncompressed_length;
          opaque compressed_certificate_message&lt;1..2^24-1&gt;;
-    } Certificate;
+    } CompressedCertificate;
 </pre>
-<p/>
+<p></p>
 
 <dl>
-  <dt>uncompressed_length</dt>
-  <dd style="margin-left: 8">The length of the Certificate message once it is uncompressed.  If after decompression the specified length does not match the actual length, the client MUST abort the connection with the &#8220;bad_certificate&#8221; alert.</dd>
-  <dt>compressed_certificate_message</dt>
-  <dd style="margin-left: 8">The compressed body of the Certificate message, in the same format as the server would normally express it. The compression algorithm defines how the bytes in the compressed_certificate_message are converted into the Certificate message.</dd>
+<dt>algorithm</dt>
+<dd style="margin-left: 8">The algorithm used to compress the certificate.  The algorithm MUST be one of the algorithms listed in the peer&#8217;s compress_certificate extension.</dd>
+<dt>uncompressed_length</dt>
+<dd style="margin-left: 8">The length of the Certificate message once it is uncompressed.  If after decompression the specified length does not match the actual length, the party receiving the invalid message MUST abort the connection with the &#8220;bad_certificate&#8221; alert.</dd>
+<dt>compressed_certificate_message</dt>
+<dd style="margin-left: 8">The compressed body of the Certificate message, in the same format as it would normally be expressed in. The compression algorithm defines how the bytes in the compressed_certificate_message field are converted into the Certificate message.</dd>
 </dl>
-<p id="rfc.section.4.p.3">If the specified compression algorithm is zlib, then the Certificate message MUST be compressed with the ZLIB compression algorithm, as defined in <a href="#RFC1950">[RFC1950]</a>.  If the specified compression algorithm is brotli, the Certificate message MUST be compressed with the Brotli compression algorithm as defined in <a href="#RFC7932">[RFC7932]</a>.</p>
-<p id="rfc.section.4.p.4">If the client cannot decompress the received Certificate message from the server, it MUST tear down the connection with the &#8220;bad_certificate&#8221; alert.</p>
-<p id="rfc.section.4.p.5">The extension only affects the Certificate message from the server.  It does not change the format of the Certificate message sent by the client.</p>
-<p id="rfc.section.4.p.6">If the format of the message is altered using the server_certificate_type extension <a href="#RFC7250">[RFC7250]</a>, the resulting altered message is compressed instead.</p>
-<p id="rfc.section.4.p.7">If the server chooses to use the cached_info extension <a href="#RFC7924">[RFC7924]</a> to replace the Certificate message with a hash, it MUST NOT send the compress_server_certificates extension.</p>
-<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
-<p id="rfc.section.5.p.1">After decompression, the Certificate message MUST be processed as if it were encoded without being compressed.  This way, the parsing and the verification have the same security properties as they would have in TLS normally.</p>
-<p id="rfc.section.5.p.2">Since certificate chains are typically presented on a per-server name basis, the attacker does not have control over any individual fragments in the Certificate message, meaning that they cannot leak information about the certificate by modifying the plaintext.</p>
-<p id="rfc.section.5.p.3">The implementations SHOULD bound the memory usage when decompressing the Certificate message.</p>
-<p id="rfc.section.5.p.4">The implementations MUST limit the size of the resulting decompressed chain to the specified uncompressed length, and they MUST abort the connection if the size exceeds that limit.  TLS framing imposes 16777216 byte limit on the certificate message size, and the implementations MAY impose a limit that is lower than that; in both cases, they MUST apply the same limit as if no compression were used.</p>
-<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
-<h2 id="rfc.section.6.1"><a href="#rfc.section.6.1">6.1.</a> <a href="#update-of-the-tls-extensiontype-registry" id="update-of-the-tls-extensiontype-registry">Update of the TLS ExtensionType Registry</a></h2>
-<p id="rfc.section.6.1.p.1">Create an entry, compress_server_certificates(TBD), in the existing registry for ExtensionType (defined in <a href="#RFC5246">[RFC5246]</a>).</p>
-<h2 id="rfc.section.6.2"><a href="#rfc.section.6.2">6.2.</a> <a href="#registry-for-compression-algorithms" id="registry-for-compression-algorithms">Registry for Compression Algorithms</a></h2>
-<p id="rfc.section.6.2.p.1">This document establishes a registry of compression algorithms supported for compressing the Certificate message, titled &#8220;Certificate Compression Algorithm IDs&#8221;, under the existing &#8220;Transport Layer Security (TLS) Extensions&#8221; heading.</p>
-<p id="rfc.section.6.2.p.2">The entries in the registry are:</p>
-<table cellpadding="3" cellspacing="0" class="tt full center">
-  <thead>
-    <tr>
-      <th class="left">Algorithm Number</th>
-      <th class="left">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="left">0</td>
-      <td class="left">zlib</td>
-    </tr>
-    <tr>
-      <td class="left">1</td>
-      <td class="left">brotli</td>
-    </tr>
-    <tr>
-      <td class="left">224 to 255</td>
-      <td class="left">Reserved for Private Use</td>
-    </tr>
-  </tbody>
-</table>
-<p id="rfc.section.6.2.p.3">The values in this registry shall be allocated under &#8220;IETF Review&#8221; policy for values strictly smaller than 64, and under &#8220;Specification Required&#8221; policy otherwise (see <a href="#RFC5226">[RFC5226]</a> for the definition of relevant policies).</p>
-<h1 id="rfc.references"><a href="#rfc.references">7.</a> Normative References</h1>
-<table>
-  <tbody>
-    <tr>
-      <td class="reference">
-        <b id="RFC1950">[RFC1950]</b>
-      </td>
-      <td class="top"><a>Deutsch, P.</a> and <a>J-L. Gailly</a>, "<a href="http://tools.ietf.org/html/rfc1950">ZLIB Compressed Data Format Specification version 3.3</a>", RFC 1950, DOI 10.17487/RFC1950, May 1996.</td>
-    </tr>
-    <tr>
-      <td class="reference">
-        <b id="RFC2119">[RFC2119]</b>
-      </td>
-      <td class="top"><a>Bradner, S.</a>, "<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
-    </tr>
-    <tr>
-      <td class="reference">
-        <b id="RFC4366">[RFC4366]</b>
-      </td>
-      <td class="top"><a>Blake-Wilson, S.</a>, <a>Nystrom, M.</a>, <a>Hopwood, D.</a>, <a>Mikkelsen, J.</a> and <a>T. Wright</a>, "<a href="http://tools.ietf.org/html/rfc4366">Transport Layer Security (TLS) Extensions</a>", RFC 4366, DOI 10.17487/RFC4366, April 2006.</td>
-    </tr>
-    <tr>
-      <td class="reference">
-        <b id="RFC5226">[RFC5226]</b>
-      </td>
-      <td class="top"><a>Narten, T.</a> and <a>H. Alvestrand</a>, "<a href="http://tools.ietf.org/html/rfc5226">Guidelines for Writing an IANA Considerations Section in RFCs</a>", BCP 26, RFC 5226, DOI 10.17487/RFC5226, May 2008.</td>
-    </tr>
-    <tr>
-      <td class="reference">
-        <b id="RFC5246">[RFC5246]</b>
-      </td>
-      <td class="top"><a>Dierks, T.</a> and <a>E. Rescorla</a>, "<a href="http://tools.ietf.org/html/rfc5246">The Transport Layer Security (TLS) Protocol Version 1.2</a>", RFC 5246, DOI 10.17487/RFC5246, August 2008.</td>
-    </tr>
-    <tr>
-      <td class="reference">
-        <b id="RFC7250">[RFC7250]</b>
-      </td>
-      <td class="top"><a>Wouters, P.</a>, <a>Tschofenig, H.</a>, <a>Gilmore, J.</a>, <a>Weiler, S.</a> and <a>T. Kivinen</a>, "<a href="http://tools.ietf.org/html/rfc7250">Using Raw Public Keys in Transport Layer Security (TLS) and Datagram Transport Layer Security (DTLS)</a>", RFC 7250, DOI 10.17487/RFC7250, June 2014.</td>
-    </tr>
-    <tr>
-      <td class="reference">
-        <b id="RFC7924">[RFC7924]</b>
-      </td>
-      <td class="top"><a>Santesson, S.</a> and <a>H. Tschofenig</a>, "<a href="http://tools.ietf.org/html/rfc7924">Transport Layer Security (TLS) Cached Information Extension</a>", RFC 7924, DOI 10.17487/RFC7924, July 2016.</td>
-    </tr>
-    <tr>
-      <td class="reference">
-        <b id="RFC7932">[RFC7932]</b>
-      </td>
-      <td class="top"><a>Alakuijala, J.</a> and <a>Z. Szabadka</a>, "<a href="http://tools.ietf.org/html/rfc7932">Brotli Compressed Data Format</a>", RFC 7932, DOI 10.17487/RFC7932, July 2016.</td>
-    </tr>
-  </tbody>
-</table>
-<h1 id="rfc.authors">
-  <a href="#rfc.authors">Authors' Addresses</a>
+<p id="rfc.section.4.p.4">If the specified compression algorithm is zlib, then the Certificate message MUST be compressed with the ZLIB compression algorithm, as defined in <a href="#RFC1950" class="xref">[RFC1950]</a>.  If the specified compression algorithm is brotli, the Certificate message MUST be compressed with the Brotli compression algorithm as defined in <a href="#RFC7932" class="xref">[RFC7932]</a>.</p>
+<p id="rfc.section.4.p.5">If the received CompressedCertificate message cannot be decompressed, the connection MUST be torn down with the &#8220;bad_certificate&#8221; alert.</p>
+<p id="rfc.section.4.p.6">If the format of the Certificate message is altered using the server_certificate_type or client_certificate_type extensions <a href="#RFC7250" class="xref">[RFC7250]</a>, the resulting altered message is compressed instead.</p>
+<h1 id="rfc.section.5">
+<a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
+<p id="rfc.section.5.p.1">After decompression, the Certificate message MUST be processed as if it were encoded without being compressed.  This way, the parsing and the verification have the same security properties as they would have in TLS normally.</p>
+<p id="rfc.section.5.p.2">Since certificate chains are typically presented on a per-server name or per-user basis, the attacker does not have control over any individual fragments in the Certificate message, meaning that they cannot leak information about the certificate by modifying the plaintext.</p>
+<p id="rfc.section.5.p.3">The implementations SHOULD bound the memory usage when decompressing the CompressedCertificate message.</p>
+<p id="rfc.section.5.p.4">The implementations MUST limit the size of the resulting decompressed chain to the specified uncompressed length, and they MUST abort the connection if the size exceeds that limit.  TLS framing imposes 16777216 byte limit on the certificate message size, and the implementations MAY impose a limit that is lower than that; in both cases, they MUST apply the same limit as if no compression were used.</p>
+<h1 id="rfc.section.6">
+<a href="#rfc.section.6">6.</a> <a href="#middlebox-compatibility" id="middlebox-compatibility">Middlebox Compatibility</a>
+</h1>
+<p id="rfc.section.6.p.1">It&#8217;s been observed that a significant number of middleboxes intercept and try to validate the Certificate message exchanged during a TLS handshake. This means that middleboxes that don&#8217;t understand the CompressedCertificate message might misbehave and drop connections that adopt certificate compression.  Because of that, the extension is only supported in the versions of TLS where the certificate message is encrypted in a way that prevents middleboxes from intercepting it, that is, TLS version 1.3 <a href="#I-D.ietf-tls-tls13" class="xref">[I-D.ietf-tls-tls13]</a> and higher.</p>
+<h1 id="rfc.section.7">
+<a href="#rfc.section.7">7.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
+</h1>
+<h2 id="rfc.section.7.1">
+<a href="#rfc.section.7.1">7.1.</a> <a href="#update-of-the-tls-extensiontype-registry" id="update-of-the-tls-extensiontype-registry">Update of the TLS ExtensionType Registry</a>
+</h2>
+<p id="rfc.section.7.1.p.1">Create an entry, compress_certificate(27), in the existing registry for ExtensionType (defined in <a href="#I-D.ietf-tls-tls13" class="xref">[I-D.ietf-tls-tls13]</a>), with &#8220;TLS 1.3&#8221; column values being set to &#8220;CH, CR&#8221;, and &#8220;Recommended&#8221; column being set to &#8220;Yes&#8221;.</p>
+<h2 id="rfc.section.7.2">
+<a href="#rfc.section.7.2">7.2.</a> <a href="#update-of-the-tls-handshaketype-registry" id="update-of-the-tls-handshaketype-registry">Update of the TLS HandshakeType Registry</a>
+</h2>
+<p id="rfc.section.7.2.p.1">Create an entry, compressed_certificate(25), in the existing registry for HandshakeType (defined in <a href="#RFC5246" class="xref">[RFC5246]</a>).</p>
+<h2 id="rfc.section.7.3">
+<a href="#rfc.section.7.3">7.3.</a> <a href="#registry-for-compression-algorithms" id="registry-for-compression-algorithms">Registry for Compression Algorithms</a>
+</h2>
+<p id="rfc.section.7.3.p.1">This document establishes a registry of compression algorithms supported for compressing the Certificate message, titled &#8220;Certificate Compression Algorithm IDs&#8221;, under the existing &#8220;Transport Layer Security (TLS) Extensions&#8221; heading.</p>
+<p id="rfc.section.7.3.p.2">The entries in the registry are:</p>
+<table cellpadding="3" cellspacing="0" class="tt full center">
+<thead><tr>
+<th class="left">Algorithm Number</th>
+<th class="left">Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="left">0</td>
+<td class="left">Reserved</td>
+</tr>
+<tr>
+<td class="left">1</td>
+<td class="left">zlib</td>
+</tr>
+<tr>
+<td class="left">2</td>
+<td class="left">brotli</td>
+</tr>
+<tr>
+<td class="left">16384 to 65535</td>
+<td class="left">Reserved for Experimental Use</td>
+</tr>
+</tbody>
+</table>
+<p id="rfc.section.7.3.p.3">The values in this registry shall be allocated under &#8220;IETF Review&#8221; policy for values strictly smaller than 256, under &#8220;Specification Required&#8221; policy for values 256-16383, and under &#8220;Experimental Use&#8221; otherwise (see <a href="#RFC8126" class="xref">[RFC8126]</a> for the definition of relevant policies).  Experimental Use extensions can be used both on private networks and over the open Internet.</p>
+<p id="rfc.section.7.3.p.4">The procedures for requesting values in the Specification Required space are specified in <a href="#I-D.ietf-tls-iana-registry-updates" class="xref">[I-D.ietf-tls-iana-registry-updates]</a>.</p>
+<h1 id="rfc.references">
+<a href="#rfc.references">8.</a> Normative References</h1>
+<table><tbody>
+<tr>
+<td class="reference"><b id="I-D.ietf-tls-iana-registry-updates">[I-D.ietf-tls-iana-registry-updates]</b></td>
+<td class="top">
+<a>Salowey, J.</a> and <a>S. Turner</a>, "<a href="https://tools.ietf.org/html/draft-ietf-tls-iana-registry-updates-05">IANA Registry Updates for Transport Layer Security (TLS) and Datagram Transport Layer Security (DTLS)</a>", Internet-Draft draft-ietf-tls-iana-registry-updates-05, May 2018.</td>
+</tr>
+<tr>
+<td class="reference"><b id="I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</b></td>
+<td class="top">
+<a>Rescorla, E.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-tls-tls13-28">The Transport Layer Security (TLS) Protocol Version 1.3</a>", Internet-Draft draft-ietf-tls-tls13-28, March 2018.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC1950">[RFC1950]</b></td>
+<td class="top">
+<a>Deutsch, P.</a> and <a>J-L. Gailly</a>, "<a href="https://tools.ietf.org/html/rfc1950">ZLIB Compressed Data Format Specification version 3.3</a>", RFC 1950, DOI 10.17487/RFC1950, May 1996.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC2119">[RFC2119]</b></td>
+<td class="top">
+<a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC5246">[RFC5246]</b></td>
+<td class="top">
+<a>Dierks, T.</a> and <a>E. Rescorla</a>, "<a href="https://tools.ietf.org/html/rfc5246">The Transport Layer Security (TLS) Protocol Version 1.2</a>", RFC 5246, DOI 10.17487/RFC5246, August 2008.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7250">[RFC7250]</b></td>
+<td class="top">
+<a>Wouters, P.</a>, <a>Tschofenig, H.</a>, <a>Gilmore, J.</a>, <a>Weiler, S.</a> and <a>T. Kivinen</a>, "<a href="https://tools.ietf.org/html/rfc7250">Using Raw Public Keys in Transport Layer Security (TLS) and Datagram Transport Layer Security (DTLS)</a>", RFC 7250, DOI 10.17487/RFC7250, June 2014.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7924">[RFC7924]</b></td>
+<td class="top">
+<a>Santesson, S.</a> and <a>H. Tschofenig</a>, "<a href="https://tools.ietf.org/html/rfc7924">Transport Layer Security (TLS) Cached Information Extension</a>", RFC 7924, DOI 10.17487/RFC7924, July 2016.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7932">[RFC7932]</b></td>
+<td class="top">
+<a>Alakuijala, J.</a> and <a>Z. Szabadka</a>, "<a href="https://tools.ietf.org/html/rfc7932">Brotli Compressed Data Format</a>", RFC 7932, DOI 10.17487/RFC7932, July 2016.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8126">[RFC8126]</b></td>
+<td class="top">
+<a>Cotton, M.</a>, <a>Leiba, B.</a> and <a>T. Narten</a>, "<a href="https://tools.ietf.org/html/rfc8126">Guidelines for Writing an IANA Considerations Section in RFCs</a>", BCP 26, RFC 8126, DOI 10.17487/RFC8126, June 2017.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8174">[RFC8174]</b></td>
+<td class="top">
+<a>Leiba, B.</a>, "<a href="https://tools.ietf.org/html/rfc8174">Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</a>", BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017.</td>
+</tr>
+</tbody></table>
+<h1 id="rfc.appendix.A">
+<a href="#rfc.appendix.A">Appendix A.</a> <a href="#acknowledgements" id="acknowledgements">Acknowledgements</a>
+</h1>
+<p id="rfc.section.A.p.1">Certificate compression was originally introduced in the QUIC Crypto protocol, designed by Adam Langley and Wan-Teh Chang.</p>
+<p id="rfc.section.A.p.2">This document has benefited from contributions and suggestions from David Benjamin, Ryan Hamilton, Ilari Liusvaara, Piotr Sikora, Ian Swett, Martin Thomson, Sean Turner and many others.</p>
+<h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
 <div class="avoidbreak">
   <address class="vcard">
 	<span class="vcardline">
