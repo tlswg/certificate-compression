@@ -24,14 +24,13 @@ author:
 normative:
   RFC1950:
   RFC2119:
-  RFC5246:
   RFC7250:
   RFC7932:
   RFC7924:
   RFC8126:
   RFC8174:
-  I-D.ietf-tls-tls13:
-  I-D.ietf-tls-iana-registry-updates:
+  RFC8446:
+  RFC8447:
 
 informative:
 
@@ -73,9 +72,9 @@ is negotiated, the peers MUST ignore this extension.
 This document defines a new extension type (compress_certificate(27)), which
 can be used to signal the supported compression formats for the Certificate
 message to the peer.  Whenever it is sent by the client as a ClientHello message
-extension ([I-D.ietf-tls-tls13], Section 4.1.2), it indicates the support for
+extension ([RFC8446], Section 4.1.2), it indicates the support for
 compressed server certificates.  Whenever it is sent by the server as a
-CertificateRequest extension ([I-D.ietf-tls-tls13], Section 4.3.2), it indicates
+CertificateRequest extension ([RFC8446], Section 4.3.2), it indicates
 the support for compressed client certificates.
 
 By sending a compress_certificate extension, the sender indicates to the peer
@@ -170,20 +169,20 @@ means that middleboxes that don't understand the CompressedCertificate message
 might misbehave and drop connections that adopt certificate compression.
 Because of that, the extension is only supported in the versions of TLS where
 the certificate message is encrypted in a way that prevents middleboxes from
-intercepting it, that is, TLS version 1.3 [I-D.ietf-tls-tls13] and higher.
+intercepting it, that is, TLS version 1.3 [RFC8446] and higher.
 
 # IANA Considerations
 
 ## Update of the TLS ExtensionType Registry
 
 Create an entry, compress_certificate(27), in the existing registry for
-ExtensionType (defined in [I-D.ietf-tls-tls13]), with "TLS 1.3" column values
+ExtensionType (defined in [RFC8446]), with "TLS 1.3" column values
 being set to "CH, CR", and "Recommended" column being set to "Yes".
 
 ## Update of the TLS HandshakeType Registry
 
 Create an entry, compressed_certificate(25), in the existing registry for
-HandshakeType (defined in [RFC5246]).
+HandshakeType (defined in [RFC8446]).
 
 ## Registry for Compression Algorithms
 
@@ -207,7 +206,7 @@ definition of relevant policies).  Experimental Use extensions can be used both
 on private networks and over the open Internet.
 
 The procedures for requesting values in the Specification Required space are
-specified in [I-D.ietf-tls-iana-registry-updates].
+specified in [RFC8447].
 
 --- back
 
