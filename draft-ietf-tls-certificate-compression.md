@@ -90,7 +90,7 @@ CertificateCompressionAlgorithms value:
     } CertificateCompressionAlgorithm;
 
     struct {
-        CertificateCompressionAlgorithm algorithms<1..2^8-1>;
+        CertificateCompressionAlgorithm algorithms<2..2^8-2>;
     } CertificateCompressionAlgorithms;
 ~~~
 
