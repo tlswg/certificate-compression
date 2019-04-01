@@ -9,77 +9,30 @@
 
   
 <style type="text/css">/*<![CDATA[*/
-@viewport {
-  zoom: 1.0;
-  width: extend-to-zoom;
-}
-@-ms-viewport {
-  width: extend-to-zoom;
-  zoom: 1.0;
-}
-
-@media screen and (min-width: 1024px) {
-  ul.toc, #rfc\.toc {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    right: calc(50vw - 500px);
-    width: 300px;
-    padding: 0 1em;
-    z-index: 1;
-  }
-  #rfc\.toc {
-    top: 16px;
-  }
-  ul.toc {
-    top: 80px;
-    overflow: auto;
-  }
-
-  body {
-    padding-left: 1.5em;
-    padding-right: 29em;
-  }
-}
 
 body {
-  font: 15px "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font: 16px "Helvetica Neue","Open Sans",Helvetica,Calibri,sans-serif;
   color: #333;
   font-size-adjust: 0.5;
-  line-height: 130%;
-  margin: 2.5em auto;
-  max-width: 724px;
+  line-height: 24px;
+  margin: 75px auto;
+  max-width: 624px;
+  padding: 0 5px;
 }
 
-.title, .filename, h1, h2, h3, h4 {
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+.title, .filename, h1, h2, h3, h4, h5 {
+  font: 16px "Roboto Condensed","Helvetica Neue","Open Sans",Helvetica,Calibri,sans-serif;
   font-size-adjust: 0.5;
-  font-weight: 500;
+  font-weight: bold;
   color: #333;
   line-height: 100%;
-  margin: 0.8em 0 0.3em;
+  margin: 1.2em 0 0.3em;
 }
-.title { font-size: 36px; }
-h1 { font-size: 30px; }
-h2 { font-size: 24px; }
-h3, h4 { font-size: 18px; }
+.title, #rfc\.title h1 { font-size: 32px; }
+h1, section h1, h2, section h2, section h3, nav h2 { font-size: 20px; }
+h3, section h4, h4, section h5 { font-size: 16px; }
 h1 a[href], h2 a[href], h3 a[href], h4 a[href] {
   color: #333;
-}
-
-ul.toc li {
-  list-style: none;
-  text-indent: -2.5em;
-  padding-left: 2.5em;
-  padding-bottom: 5px;
-  margin: 0;
-}
-ul.toc ul {
-  margin: 0;
-}
-/* xml2rfc nests ul directly inside ul which messes with the style badly */
-ul.toc, ul.toc>ul, ul.toc ul>ul {
-  margin: 0 0 0 1.5em;
 }
 
 table {
@@ -108,29 +61,30 @@ td.reference {
 }
 
 
-table.header {
+table.header, table#rfc\.headerblock {
   width: 100%;
 }
-table.header td {
+table.header td, table#rfc\.headerblock td {
   border: none;
   background-color: transparent;
   color: black;
+  padding: 0;
 }
 .filename {
+  display: block;
   color: rgb(119, 119, 119);
-  font-size: 23px;
-  font-weight: normal;
-  height: auto;
-  line-height: 100%;
-}
-#rfc\.abstract+p {
   font-size: 20px;
-  font-weight: 300;
-  line-height: 130%;
+  font-weight: normal;
+  line-height: 100%;
+  margin: 10px 0 32px;
+}
+#rfc\.abstract+p, #rfc\.abstract p {
+  font-size: 20px;
+  line-height: 28px;
 }
 
-samp, tt, code, pre {
-  font: 11pt consolas, monospace;
+samp, tt, code, pre, span.tt {
+  font: 13.5px Consolas, monospace;
   font-size-adjust: none;
 }
 pre {
@@ -140,13 +94,15 @@ pre {
   padding: 5px;
   margin: 5px;
 }
-.figure {
+.figure, caption {
   font-style: italic;
   margin: 0 1.5em;
+  text-align: left;
 }
 
 address {
-  margin: 10px 0 0;
+  margin: 16px 2px;
+  line-height: 20px;
 }
 .vcard {
   font-style: normal;
@@ -154,8 +110,8 @@ address {
 .vcardline {
   display: block;
 }
-.vcardline .fn {
-  font-weight: bold;
+.vcardline .fn, address b {
+  font-weight: normal;
 }
 .vcardline .hidden {
   display: none;
@@ -195,6 +151,9 @@ hr {
   border: 0;
   border-top: 1px solid #eee;
 }
+hr.noprint {
+  display: none;
+}
 
 a {
   text-decoration: none;
@@ -206,15 +165,59 @@ a[href]:hover {
   background-color: #eee;
 }
 
-ol, ul, li, p {
+p, ol, ul, li {
   padding: 0;
-  margin: 0.5em 0 0.5em 2em;
 }
-li, p {
-  margin-left: 0;
+p {
+  margin: 0.5em 0;
+}
+ol, ul {
+  margin: 0.2em 0 0.2em 2em;
+}
+li {
+  margin: 0.2em 0;
 }
 address {
   font-style: normal;
+}
+
+ul.toc ul {
+  margin: 0 0 0 2em;
+}
+ul.toc li {
+  list-style: none;
+  margin: 0;
+}
+
+@media screen and (min-width: 924px) {
+  body {
+    padding-right: 350px;
+  }
+  body>ul.toc, body>#rfc\.toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 500px);
+    width: 300px;
+    z-index: 1;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  body>#rfc\.toc {
+    top: 55px;
+  }
+  body>ul.toc {
+    top: 100px;
+  }
+
+  ul.toc {
+    margin: 0 0 0 4px;
+    font-size: 12px;
+    line-height: 20px;
+  }
+  ul.toc ul {
+    margin-left: 1.2em;
+  }
 }
 
 .github-fork-ribbon-wrapper {
@@ -274,6 +277,7 @@ address {
     position: fixed;
   }
   /*]]>*/</style>
+  <meta name="viewport" content="initial-scale=1.0">
 
 
   <link href="#rfc.toc" rel="Contents">
@@ -292,14 +296,14 @@ address {
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.9.8 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.15.5 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Ghedini, A. and V. Vasiliev" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-tls-certificate-compression-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-08-11" />
-  <meta name="dct.abstract" content="In TLS handshakes, certificate chains often take up the majority of the bytes transmitted." />
-  <meta name="description" content="In TLS handshakes, certificate chains often take up the majority of the bytes transmitted." />
+  <meta name="dct.issued" scheme="ISO8601" content="2019-04-01" />
+  <meta name="dct.abstract" content="In TLS handshakes, certificate chains often take up the majority of the bytes transmitted.This document describes how certificate chains can be compressed to reduce the amount of data transmitted and avoid some round trips." />
+  <meta name="description" content="In TLS handshakes, certificate chains often take up the majority of the bytes transmitted.This document describes how certificate chains can be compressed to reduce the amount of data transmitted and avoid some round trips." />
 
 </head>
 
@@ -321,12 +325,12 @@ address {
 <td class="right">V. Vasiliev</td>
 </tr>
 <tr>
-<td class="left">Expires: February 12, 2019</td>
+<td class="left">Expires: October 3, 2019</td>
 <td class="right">Google</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">August 11, 2018</td>
+<td class="right">April 01, 2019</td>
 </tr>
 
     	
@@ -343,9 +347,9 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on February 12, 2019.</p>
+<p>This Internet-Draft will expire on October 3, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
-<p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
 
   
@@ -397,7 +401,7 @@ address {
 <a href="#rfc.section.3">3.</a> <a href="#negotiating-certificate-compression" id="negotiating-certificate-compression">Negotiating Certificate Compression</a>
 </h1>
 <p id="rfc.section.3.p.1">This extension is only supported with TLS 1.3 and newer; if TLS 1.2 or earlier is negotiated, the peers MUST ignore this extension.</p>
-<p id="rfc.section.3.p.2">This document defines a new extension type (compress_certificate(27)), which can be used to signal the supported compression formats for the Certificate message to the peer.  Whenever it is sent by the client as a ClientHello message extension (<a href="#I-D.ietf-tls-tls13" class="xref">[I-D.ietf-tls-tls13]</a>, Section 4.1.2), it indicates the support for compressed server certificates.  Whenever it is sent by the server as a CertificateRequest extension (<a href="#I-D.ietf-tls-tls13" class="xref">[I-D.ietf-tls-tls13]</a>, Section 4.3.2), it indicates the support for compressed client certificates.</p>
+<p id="rfc.section.3.p.2">This document defines a new extension type (compress_certificate(27)), which can be used to signal the supported compression formats for the Certificate message to the peer.  Whenever it is sent by the client as a ClientHello message extension (<a href="#RFC8446" class="xref">[RFC8446]</a>, Section 4.1.2), it indicates the support for compressed server certificates.  Whenever it is sent by the server as a CertificateRequest extension (<a href="#RFC8446" class="xref">[RFC8446]</a>, Section 4.3.2), it indicates the support for compressed client certificates.</p>
 <p id="rfc.section.3.p.3">By sending a compress_certificate extension, the sender indicates to the peer the certificate compression algorithms it is willing to use for decompression.  The &#8220;extension_data&#8221; field of this extension SHALL contain a CertificateCompressionAlgorithms value:</p>
 <pre>
     enum {
@@ -407,7 +411,7 @@ address {
     } CertificateCompressionAlgorithm;
 
     struct {
-        CertificateCompressionAlgorithm algorithms&lt;1..2^8-1&gt;;
+        CertificateCompressionAlgorithm algorithms&lt;2..2^8-2&gt;;
     } CertificateCompressionAlgorithms;
 </pre>
 <p id="rfc.section.3.p.4">There is no ServerHello extension that the server is required to echo back.</p>
@@ -446,18 +450,18 @@ address {
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> <a href="#middlebox-compatibility" id="middlebox-compatibility">Middlebox Compatibility</a>
 </h1>
-<p id="rfc.section.6.p.1">It&#8217;s been observed that a significant number of middleboxes intercept and try to validate the Certificate message exchanged during a TLS handshake. This means that middleboxes that don&#8217;t understand the CompressedCertificate message might misbehave and drop connections that adopt certificate compression.  Because of that, the extension is only supported in the versions of TLS where the certificate message is encrypted in a way that prevents middleboxes from intercepting it, that is, TLS version 1.3 <a href="#I-D.ietf-tls-tls13" class="xref">[I-D.ietf-tls-tls13]</a> and higher.</p>
+<p id="rfc.section.6.p.1">It&#8217;s been observed that a significant number of middleboxes intercept and try to validate the Certificate message exchanged during a TLS handshake. This means that middleboxes that don&#8217;t understand the CompressedCertificate message might misbehave and drop connections that adopt certificate compression.  Because of that, the extension is only supported in the versions of TLS where the certificate message is encrypted in a way that prevents middleboxes from intercepting it, that is, TLS version 1.3 <a href="#RFC8446" class="xref">[RFC8446]</a> and higher.</p>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
 </h1>
 <h2 id="rfc.section.7.1">
 <a href="#rfc.section.7.1">7.1.</a> <a href="#update-of-the-tls-extensiontype-registry" id="update-of-the-tls-extensiontype-registry">Update of the TLS ExtensionType Registry</a>
 </h2>
-<p id="rfc.section.7.1.p.1">Create an entry, compress_certificate(27), in the existing registry for ExtensionType (defined in <a href="#I-D.ietf-tls-tls13" class="xref">[I-D.ietf-tls-tls13]</a>), with &#8220;TLS 1.3&#8221; column values being set to &#8220;CH, CR&#8221;, and &#8220;Recommended&#8221; column being set to &#8220;Yes&#8221;.</p>
+<p id="rfc.section.7.1.p.1">Create an entry, compress_certificate(27), in the existing registry for ExtensionType (defined in <a href="#RFC8446" class="xref">[RFC8446]</a>), with &#8220;TLS 1.3&#8221; column values being set to &#8220;CH, CR&#8221;, and &#8220;Recommended&#8221; column being set to &#8220;Yes&#8221;.</p>
 <h2 id="rfc.section.7.2">
 <a href="#rfc.section.7.2">7.2.</a> <a href="#update-of-the-tls-handshaketype-registry" id="update-of-the-tls-handshaketype-registry">Update of the TLS HandshakeType Registry</a>
 </h2>
-<p id="rfc.section.7.2.p.1">Create an entry, compressed_certificate(25), in the existing registry for HandshakeType (defined in <a href="#RFC5246" class="xref">[RFC5246]</a>).</p>
+<p id="rfc.section.7.2.p.1">Create an entry, compressed_certificate(25), in the existing registry for HandshakeType (defined in <a href="#RFC8446" class="xref">[RFC8446]</a>).</p>
 <h2 id="rfc.section.7.3">
 <a href="#rfc.section.7.3">7.3.</a> <a href="#registry-for-compression-algorithms" id="registry-for-compression-algorithms">Registry for Compression Algorithms</a>
 </h2>
@@ -488,20 +492,10 @@ address {
 </tbody>
 </table>
 <p id="rfc.section.7.3.p.3">The values in this registry shall be allocated under &#8220;IETF Review&#8221; policy for values strictly smaller than 256, under &#8220;Specification Required&#8221; policy for values 256-16383, and under &#8220;Experimental Use&#8221; otherwise (see <a href="#RFC8126" class="xref">[RFC8126]</a> for the definition of relevant policies).  Experimental Use extensions can be used both on private networks and over the open Internet.</p>
-<p id="rfc.section.7.3.p.4">The procedures for requesting values in the Specification Required space are specified in <a href="#I-D.ietf-tls-iana-registry-updates" class="xref">[I-D.ietf-tls-iana-registry-updates]</a>.</p>
+<p id="rfc.section.7.3.p.4">The procedures for requesting values in the Specification Required space are specified in <a href="#RFC8447" class="xref">[RFC8447]</a>.</p>
 <h1 id="rfc.references">
 <a href="#rfc.references">8.</a> Normative References</h1>
 <table><tbody>
-<tr>
-<td class="reference"><b id="I-D.ietf-tls-iana-registry-updates">[I-D.ietf-tls-iana-registry-updates]</b></td>
-<td class="top">
-<a>Salowey, J.</a> and <a>S. Turner</a>, "<a href="https://tools.ietf.org/html/draft-ietf-tls-iana-registry-updates-05">IANA Registry Updates for Transport Layer Security (TLS) and Datagram Transport Layer Security (DTLS)</a>", Internet-Draft draft-ietf-tls-iana-registry-updates-05, May 2018.</td>
-</tr>
-<tr>
-<td class="reference"><b id="I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</b></td>
-<td class="top">
-<a>Rescorla, E.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-tls-tls13-28">The Transport Layer Security (TLS) Protocol Version 1.3</a>", Internet-Draft draft-ietf-tls-tls13-28, March 2018.</td>
-</tr>
 <tr>
 <td class="reference"><b id="RFC1950">[RFC1950]</b></td>
 <td class="top">
@@ -511,11 +505,6 @@ address {
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
 <td class="top">
 <a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC5246">[RFC5246]</b></td>
-<td class="top">
-<a>Dierks, T.</a> and <a>E. Rescorla</a>, "<a href="https://tools.ietf.org/html/rfc5246">The Transport Layer Security (TLS) Protocol Version 1.2</a>", RFC 5246, DOI 10.17487/RFC5246, August 2008.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC7250">[RFC7250]</b></td>
@@ -541,6 +530,16 @@ address {
 <td class="reference"><b id="RFC8174">[RFC8174]</b></td>
 <td class="top">
 <a>Leiba, B.</a>, "<a href="https://tools.ietf.org/html/rfc8174">Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</a>", BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8446">[RFC8446]</b></td>
+<td class="top">
+<a>Rescorla, E.</a>, "<a href="https://tools.ietf.org/html/rfc8446">The Transport Layer Security (TLS) Protocol Version 1.3</a>", RFC 8446, DOI 10.17487/RFC8446, August 2018.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8447">[RFC8447]</b></td>
+<td class="top">
+<a>Salowey, J.</a> and <a>S. Turner</a>, "<a href="https://tools.ietf.org/html/rfc8447">IANA Registry Updates for TLS and DTLS</a>", RFC 8447, DOI 10.17487/RFC8447, August 2018.</td>
 </tr>
 </tbody></table>
 <h1 id="rfc.appendix.A">
