@@ -31,6 +31,7 @@ normative:
   RFC8174:
   RFC8446:
   RFC8447:
+  RFC8478:
 
 informative:
 
@@ -86,6 +87,7 @@ CertificateCompressionAlgorithms value:
     enum {
         zlib(1),
         brotli(2),
+        zstd(3),
         (65535)
     } CertificateCompressionAlgorithm;
 
@@ -131,7 +133,9 @@ compressed_certificate_message
 If the specified compression algorithm is zlib, then the Certificate message
 MUST be compressed with the ZLIB compression algorithm, as defined in [RFC1950].
 If the specified compression algorithm is brotli, the Certificate message MUST
-be compressed with the Brotli compression algorithm as defined in [RFC7932].
+be compressed with the Brotli compression algorithm as defined in [RFC7932].  If
+the specified compression algorithm is zstd, the Certificate message MUST be
+compressed with the Zstandard compression algorithm as defined in [RFC8478].
 
 If the received CompressedCertificate message cannot be decompressed, the
 connection MUST be torn down with the "bad_certificate" alert.
@@ -197,6 +201,7 @@ The entries in the registry are:
 | 0                | Reserved                      |
 | 1                | zlib                          |
 | 2                | brotli                        |
+| 3                | zstd                          |
 | 16384 to 65535   | Reserved for Experimental Use |
 
 The values in this registry shall be allocated under "IETF Review" policy for
