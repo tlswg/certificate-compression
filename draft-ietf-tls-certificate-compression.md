@@ -147,7 +147,7 @@ encoded without being compressed.  This way, the parsing and the verification
 have the same security properties as they would have in TLS normally.
 
 In order for certificate compression to function correctly, the underlying
-compression algorithm MUST be determenistic and it MUST output the same data
+compression algorithm MUST be deterministic and it MUST output the same data
 that was provided as input by the peer.
 
 Since certificate chains are typically presented on a per-server name or
