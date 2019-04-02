@@ -120,7 +120,9 @@ uncompressed_length
 : The length of the Certificate message once it is uncompressed.  If after
   decompression the specified length does not match the actual length, the
   party receiving the invalid message MUST abort the connection with the
-  "bad_certificate" alert.
+  "bad_certificate" alert.  The presence of this field allows the receiver to
+  pre-allocate the buffer for the uncompressed Certificate message and to
+  enforce limits on the message size before performing decompression.
 
 compressed_certificate_message
 : The compressed body of the Certificate message, in the same format as it
@@ -132,6 +134,10 @@ If the specified compression algorithm is zlib, then the Certificate message
 MUST be compressed with the ZLIB compression algorithm, as defined in [RFC1950].
 If the specified compression algorithm is brotli, the Certificate message MUST
 be compressed with the Brotli compression algorithm as defined in [RFC7932].
+
+It is possible to define a certificate compression algorithm that uses a
+pre-shared dictionary to achieve higher compression ratio.  This document does
+not define any such algorithms.
 
 If the received CompressedCertificate message cannot be decompressed, the
 connection MUST be torn down with the "bad_certificate" alert.
