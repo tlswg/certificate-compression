@@ -120,7 +120,7 @@ uncompressed_length
 : The length of the Certificate message once it is uncompressed.  If after
   decompression the specified length does not match the actual length, the
   party receiving the invalid message MUST abort the connection with the
-  "bad_certificate" alert.  The presence of this field allows the client to
+  "bad_certificate" alert.  The presence of this field allows the receiver to
   pre-allocate the buffer for the uncompressed Certificate message and to
   enforce limits on the message size before performing decompression.
 
