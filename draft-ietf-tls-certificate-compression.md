@@ -31,7 +31,7 @@ normative:
   RFC8174:
   RFC8446:
   RFC8447:
-  I-D.draft-kucherawy-rfc8478bis:
+  I-D.kucherawy-rfc8478bis:
 
 informative:
 
@@ -137,7 +137,7 @@ MUST be compressed with the ZLIB compression algorithm, as defined in [RFC1950].
 If the specified compression algorithm is brotli, the Certificate message MUST
 be compressed with the Brotli compression algorithm as defined in [RFC7932].  If
 the specified compression algorithm is zstd, the Certificate message MUST be
-compressed with the Zstandard compression algorithm as defined in [I-D.draft-kucherawy-rfc8478bis].
+compressed with the Zstandard compression algorithm as defined in [I-D.kucherawy-rfc8478bis].
 
 It is possible to define a certificate compression algorithm that uses a
 pre-shared dictionary to achieve higher compression ratio.  This document does
