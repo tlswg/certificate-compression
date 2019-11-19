@@ -56,7 +56,7 @@ doesn't help when the client connects to a server for the first time and
 doesn't already have knowledge of the server's certificate chain.
 
 This document describes a mechanism that would allow certificates to be
-compressed during full handshakes.
+compressed during all handshakes.
 
 # Notational Conventions
 
@@ -96,7 +96,8 @@ CertificateCompressionAlgorithms value:
     } CertificateCompressionAlgorithms;
 ~~~
 
-There is no ServerHello extension that the server is required to echo back.
+The compress_certificate extension is a unidirectional indication; no
+corresponding response extension is needed.
 
 # Compressed Certificate Message
 
@@ -127,8 +128,9 @@ uncompressed_length
   enforce limits on the message size before performing decompression.
 
 compressed_certificate_message
-: The compressed body of the Certificate message, in the same format as it
-  would normally be expressed in. The compression algorithm defines how the
+: The result of applying the indicated compression algorithm to the encoded
+  Certificate message that would be sent if certificate compression was not
+  in use. The compression algorithm defines how the
   bytes in the compressed_certificate_message field are converted into the
   Certificate message.
 
@@ -141,10 +143,11 @@ compressed with the Zstandard compression algorithm as defined in [RFC8478].
 
 It is possible to define a certificate compression algorithm that uses a
 pre-shared dictionary to achieve higher compression ratio.  This document does
-not define any such algorithms.
+not define any such algorithms, but additional codepoints may be allocated for
+such use per the policy in section 7.3.
 
 If the received CompressedCertificate message cannot be decompressed, the
-connection MUST be torn down with the "bad_certificate" alert.
+connection MUST terminate the connection with the "bad_certificate" alert.
 
 If the format of the Certificate message is altered using the
 server_certificate_type or client_certificate_type extensions [RFC7250], the
@@ -157,23 +160,23 @@ encoded without being compressed.  This way, the parsing and the verification
 have the same security properties as they would have in TLS normally.
 
 In order for certificate compression to function correctly, the underlying
-compression algorithm MUST be deterministic and it MUST output the same data
+compression algorithm and it MUST output the same data
 that was provided as input by the peer.
 
 Since certificate chains are typically presented on a per-server name or
-per-user basis, the attacker does not have control over any individual fragments
+per-user basis, a malicious application does not have control over any individual fragments
 in the Certificate message, meaning that they cannot leak information about the
 certificate by modifying the plaintext.
 
-The implementations SHOULD bound the memory usage when decompressing the
+Implementations SHOULD bound the memory usage when decompressing the
 CompressedCertificate message.
 
-The implementations MUST limit the size of the resulting decompressed chain to
+Implementations MUST limit the size of the resulting decompressed chain to
 the specified uncompressed length, and they MUST abort the connection if the
-size exceeds that limit.  TLS framing imposes 16777216 byte limit on the
-certificate message size, and the implementations MAY impose a limit that is
-lower than that; in both cases, they MUST apply the same limit as if no
-compression were used.
+size of the output of the decompression function exceeds that limit.  TLS framing
+imposes 16777216 byte limit on the certificate message size, and the implementations
+MAY impose a limit that is lower than that; in both cases, they MUST apply the same
+limit as if no compression were used.
 
 # Middlebox Compatibility
 
