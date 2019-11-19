@@ -31,7 +31,7 @@ normative:
   RFC8174:
   RFC8446:
   RFC8447:
-  RFC8478:
+  I-D.draft-kucherawy-rfc8478bis:
 
 informative:
 
