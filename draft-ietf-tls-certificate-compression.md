@@ -201,7 +201,7 @@ being set to "CH, CR", and "Recommended" column being set to "Yes".
 Create an entry, compressed_certificate(25), in the existing registry for
 HandshakeType (defined in [RFC8446]).
 
-## Registry for Compression Algorithmsi {#registry}
+## Registry for Compression Algorithms {#registry}
 
 This document establishes a registry of compression algorithms supported for
 compressing the Certificate message, titled "Certificate Compression Algorithm
