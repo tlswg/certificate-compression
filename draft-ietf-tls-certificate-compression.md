@@ -147,7 +147,7 @@ not define any such algorithms, but additional codepoints may be allocated for
 such use per the policy in section 7.3.
 
 If the received CompressedCertificate message cannot be decompressed, the
-connection MUST terminate the connection with the "bad_certificate" alert.
+connection MUST be terminated with the "bad_certificate" alert.
 
 If the format of the Certificate message is altered using the
 server_certificate_type or client_certificate_type extensions [RFC7250], the
