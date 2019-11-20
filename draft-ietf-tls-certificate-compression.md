@@ -129,7 +129,7 @@ uncompressed_length
 
 compressed_certificate_message
 : The result of applying the indicated compression algorithm to the encoded
-  Certificate message that would have be sent if certificate compression were not
+  Certificate message that would have been sent if certificate compression was not
   in use. The compression algorithm defines how the
   bytes in the compressed_certificate_message field are converted into the
   Certificate message.
