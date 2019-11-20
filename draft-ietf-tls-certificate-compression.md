@@ -129,7 +129,7 @@ uncompressed_length
 
 compressed_certificate_message
 : The result of applying the indicated compression algorithm to the encoded
-  Certificate message that would be sent if certificate compression was not
+  Certificate message that would have be sent if certificate compression were not
   in use. The compression algorithm defines how the
   bytes in the compressed_certificate_message field are converted into the
   Certificate message.
@@ -144,7 +144,7 @@ compressed with the Zstandard compression algorithm as defined in [RFC8478].
 It is possible to define a certificate compression algorithm that uses a
 pre-shared dictionary to achieve higher compression ratio.  This document does
 not define any such algorithms, but additional codepoints may be allocated for
-such use per the policy in section 7.3.
+such use per the policy in {{registry}}.
 
 If the received CompressedCertificate message cannot be decompressed, the
 connection MUST be terminated with the "bad_certificate" alert.
@@ -160,7 +160,7 @@ encoded without being compressed.  This way, the parsing and the verification
 have the same security properties as they would have in TLS normally.
 
 In order for certificate compression to function correctly, the underlying
-compression algorithm and it MUST output the same data
+compression algorithm MUST output the same data
 that was provided as input by the peer.
 
 Since certificate chains are typically presented on a per-server name or
@@ -201,7 +201,7 @@ being set to "CH, CR", and "Recommended" column being set to "Yes".
 Create an entry, compressed_certificate(25), in the existing registry for
 HandshakeType (defined in [RFC8446]).
 
-## Registry for Compression Algorithms
+## Registry for Compression Algorithmsi {#registry}
 
 This document establishes a registry of compression algorithms supported for
 compressing the Certificate message, titled "Certificate Compression Algorithm
