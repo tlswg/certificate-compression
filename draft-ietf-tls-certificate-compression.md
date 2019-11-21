@@ -209,13 +209,13 @@ IDs", under the existing "Transport Layer Security (TLS) Extensions" heading.
 
 The entries in the registry are:
 
-| Algorithm Number | Description                   |
-|:-----------------|:------------------------------|
-| 0                | Reserved                      |
-| 1                | zlib                          |
-| 2                | brotli                        |
-| 3                | zstd                          |
-| 16384 to 65535   | Reserved for Experimental Use |
+| Algorithm Number | Description                   | Reference       |
+|:-----------------|:------------------------------|-----------------|
+| 0                | Reserved                      |                 |
+| 1                | zlib                          | [this document] |
+| 2                | brotli                        | [this document] |
+| 3                | zstd                          | [this document] |
+| 16384 to 65535   | Reserved for Experimental Use |                 |
 
 The values in this registry shall be allocated under "IETF Review" policy for
 values strictly smaller than 256, under "Specification Required" policy for
