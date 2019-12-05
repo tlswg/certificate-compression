@@ -102,8 +102,9 @@ corresponding response extension is needed.
 # Compressed Certificate Message
 
 If the peer has indicated that it supports compression, server and client MAY
-compress their corresponding Certificate messages and send them in the form of
-the CompressedCertificate message (replacing the Certificate message).
+compress their corresponding Certificate messages (Section 4.4.2 of {{!RFC8446}})
+and send them in the form of the CompressedCertificate message (replacing the
+Certificate message).
 
 The CompressedCertificate message is formed as follows:
 
