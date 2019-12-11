@@ -179,6 +179,14 @@ imposes 16777216 byte limit on the certificate message size, and the implementat
 MAY impose a limit that is lower than that; in both cases, they MUST apply the same
 limit as if no compression were used.
 
+While the Certificate message in TLS 1.3 is encrypted, third parties can draw
+inferences from the message length observed on the wire.  TLS 1.3 provides a padding
+mechanism (discussed in Sections 5.4 and E.3 of [RFC8446]) to counteract such
+analysis.  Certificate compression alters the length of the Certificate message,
+and the change in length is dependent on the actual contents of the certificate.
+Any padding scheme covering the Certificate message has to address compression
+within its design, or disable it altogether.
+
 # Middlebox Compatibility
 
 It's been observed that a significant number of middleboxes intercept and try
@@ -235,5 +243,5 @@ Certificate compression was originally introduced in the QUIC Crypto protocol,
 designed by Adam Langley and Wan-Teh Chang.
 
 This document has benefited from contributions and suggestions from David
-Benjamin, Ryan Hamilton, Ilari Liusvaara, Piotr Sikora, Ian Swett, Martin
-Thomson, Sean Turner and many others.
+Benjamin, Ryan Hamilton, Christian Huitema, Benjamin Kaduk, Ilari Liusvaara,
+Piotr Sikora, Ian Swett, Martin Thomson, Sean Turner and many others.
