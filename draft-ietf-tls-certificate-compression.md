@@ -180,7 +180,7 @@ MAY impose a limit that is lower than that; in both cases, they MUST apply the s
 limit as if no compression were used.
 
 While the Certificate message in TLS 1.3 is encrypted, third parties can draw
-inferences from the message length observed on the wire.  TLS provides a padding
+inferences from the message length observed on the wire.  TLS 1.3 provides a padding
 mechanism (discussed in Sections 5.4 and E.3 of [RFC8446]) to counteract such
 analysis.  Certificate compression alters the length of the Certificate message,
 and the change in length is dependent on the actual contents of the certificate.
