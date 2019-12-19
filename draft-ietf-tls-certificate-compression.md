@@ -233,7 +233,7 @@ definition of relevant policies).  Experimental Use extensions can be used both
 on private networks and over the open Internet.
 
 The procedures for requesting values in the Specification Required space are
-specified in [RFC8447].
+specified in Section 17 of [RFC8447].
 
 --- back
 
