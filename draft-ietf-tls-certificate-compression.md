@@ -34,6 +34,7 @@ normative:
   I-D.kucherawy-rfc8478bis:
 
 informative:
+  RFC5246:
 
 --- abstract
 
@@ -67,8 +68,8 @@ when, and only when, they appear in all capitals, as shown here.
 
 # Negotiating Certificate Compression
 
-This extension is only supported with TLS 1.3 and newer; if TLS 1.2 or earlier
-is negotiated, the peers MUST ignore this extension.
+This extension is only supported with TLS 1.3 [RFC8446] and newer; if TLS 1.2
+[RFC5246] or earlier is negotiated, the peers MUST ignore this extension.
 
 This document defines a new extension type (compress_certificate(27)), which
 can be used to signal the supported compression formats for the Certificate
