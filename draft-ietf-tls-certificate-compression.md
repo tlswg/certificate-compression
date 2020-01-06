@@ -209,7 +209,8 @@ being set to "CH, CR", and "Recommended" column being set to "Yes".
 ## Update of the TLS HandshakeType Registry
 
 Create an entry, compressed_certificate(25), in the existing registry for
-HandshakeType (defined in [RFC8446]).
+HandshakeType (defined in [RFC8446]), with "DTLS-OK" column value being set to
+"Yes".
 
 ## Registry for Compression Algorithms {#registry}
 
